@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --dur: 25s; /* total cycle duration — change to speed up/slow down */
+}
+
+/* Keyframes cycle through the 4 absolute positions (A, B, C, D) */
+@keyframes rotatePos {
+  0% {
+    top: -96px; /* A top */
+    right: 48px; /* A right */
+    transform: scale(1.02);
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+  }
+  25% {
+    top: 0px; /* B top */
+    right: 208px; /* B right */
+    transform: scale(1);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+  }
+  50% {
+    top: 176px; /* C top */
+    right: 208px; /* C right */
+    transform: scale(0.96);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+  }
+  75% {
+    top: 240px; /* D top */
+    right: 48px; /* D right */
+    transform: scale(1);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+  }
+  100% {
+    top: -96px; /* back to A */
+    right: 48px;
+    transform: scale(1.02);
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+  }
+}
+
+/* Common bubble animation style */
+.bubble {
+  animation-name: rotatePos;
+  animation-duration: var(--dur);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* smooth */
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  position: absolute; /* keep Tailwind absolute but ensure CSS priority */
+  will-change: top, right, transform;
+}
+
+/* phase offsets (negative delay so the animation starts already in progress) */
+.bubble1 {
+  animation-delay: 0s;
+}
+.bubble2 {
+  animation-delay: calc(var(--dur) * -0.25);
+} /* start 25% into the cycle */
+.bubble3 {
+  animation-delay: calc(var(--dur) * -0.5);
+} /* start 50% */
+.bubble4 {
+  animation-delay: calc(var(--dur) * -0.75);
+} /* start 75% */
