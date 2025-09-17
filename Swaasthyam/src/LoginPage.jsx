@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
+  const [selectedUserType, setSelectedUserType] = useState("migrant");
 
   const handlePhoneChange = (e) => {
     // keep only digits and limit to 10
@@ -48,7 +49,15 @@ const LoginPage = () => {
   };
 
   const handleRegisterClick = () => {
-    navigate('/register');
+    if (selectedUserType === "officer") {
+      navigate('/register-officer');
+    } else if (selectedUserType === "official") {
+      navigate('/register-official');
+    }
+  };
+
+  const handleUserTypeChange = (e) => {
+    setSelectedUserType(e.target.value);
   };
 
   return (
@@ -91,6 +100,8 @@ const LoginPage = () => {
                 type="radio"
                 name="role"
                 value="migrant"
+                checked={selectedUserType === "migrant"}
+                onChange={handleUserTypeChange}
               ></input>
               Migrant Worker
             </label>
@@ -101,8 +112,10 @@ const LoginPage = () => {
                 type="radio"
                 name="role"
                 value="officer"
+                checked={selectedUserType === "officer"}
+                onChange={handleUserTypeChange}
               ></input>
-              Officer (Supervisor/Healtcare/NGO)
+              Officer (Supervisor/Healthcare/NGO)
             </label>
 
             <label className="font-semibold ">
@@ -111,6 +124,8 @@ const LoginPage = () => {
                 type="radio"
                 name="role"
                 value="official"
+                checked={selectedUserType === "official"}
+                onChange={handleUserTypeChange}
               ></input>
               Official (Government)
             </label>
@@ -225,13 +240,15 @@ const LoginPage = () => {
                 <p className="text-sm">Tap to activate camera scanner</p>
               </button>
 
-              <button
-                type="button"
-                onClick={handleRegisterClick}
-                className="w-full max-w-3xl mt-[.5rem] mx-auto h-10 flex items-center justify-center rounded-sm border-green-700 border-solid border-[1px] text-green-600 shadow-lg transition-transform duration-150 active:scale-95 focus:outline-none disabled:opacity-60"
-              >
-                Register new worker
-              </button>
+              {selectedUserType !== "migrant" && (
+                <button
+                  type="button"
+                  onClick={handleRegisterClick}
+                  className="w-full max-w-3xl mt-[.5rem] mx-auto h-10 flex items-center justify-center rounded-sm border-green-700 border-solid border-[1px] text-green-600 shadow-lg transition-transform duration-150 active:scale-95 focus:outline-none disabled:opacity-60"
+                >
+                  {selectedUserType === "officer" ? "Register new worker" : "Register new official"}
+                </button>
+              )}
             </div>
           </div>
         </article>
