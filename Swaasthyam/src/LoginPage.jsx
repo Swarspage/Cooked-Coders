@@ -1,6 +1,5 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -10,7 +9,6 @@ const LoginPage = () => {
   const [selectedUserType, setSelectedUserType] = useState("migrant");
 
   const handlePhoneChange = (e) => {
-    // keep only digits and limit to 10
     const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
     setPhone(digits);
   };
@@ -29,9 +27,9 @@ const LoginPage = () => {
       alert("Please enter a 10-digit mobile number");
       return;
     }
-    // proceed to OTP step (you can also trigger API for sending OTP here)
     setShowOtp(true);
     setOtp("");
+    // TODO: trigger backend OTP send
   };
 
   const handleOtpChange = (e) => {
@@ -44,15 +42,23 @@ const LoginPage = () => {
       alert("Please enter the 6-digit OTP");
       return;
     }
-    // verify OTP (call your API here)
-    console.log("verify", { phone, otp });
+    // TODO: call API to verify OTP
+    if (selectedUserType === "officer") {
+      navigate("/officer"); // go to OfficerDashboard
+    } else if (selectedUserType === "official") {
+      // keep current flow or send to official dashboard if available
+      navigate("/register-official");
+    } else {
+      // migrant path not specified; send home for now
+      navigate("/");
+    }
   };
 
   const handleRegisterClick = () => {
     if (selectedUserType === "officer") {
-      navigate('/register-officer');
+      navigate("/register-officer");
     } else if (selectedUserType === "official") {
-      navigate('/register-official');
+      navigate("/register-official");
     }
   };
 
@@ -94,6 +100,7 @@ const LoginPage = () => {
             <div className="mt-[2rem]">
               <p className="font-semibold text-blue-600">Select user type</p>
             </div>
+
             <label className="font-semibold ">
               <input
                 className=" m-[.5rem]"
@@ -102,7 +109,7 @@ const LoginPage = () => {
                 value="migrant"
                 checked={selectedUserType === "migrant"}
                 onChange={handleUserTypeChange}
-              ></input>
+              />
               Migrant Worker
             </label>
 
@@ -114,7 +121,7 @@ const LoginPage = () => {
                 value="officer"
                 checked={selectedUserType === "officer"}
                 onChange={handleUserTypeChange}
-              ></input>
+              />
               Officer (Supervisor/Healthcare/NGO)
             </label>
 
@@ -126,7 +133,7 @@ const LoginPage = () => {
                 value="official"
                 checked={selectedUserType === "official"}
                 onChange={handleUserTypeChange}
-              ></input>
+              />
               Official (Government)
             </label>
 
@@ -246,7 +253,9 @@ const LoginPage = () => {
                   onClick={handleRegisterClick}
                   className="w-full max-w-3xl mt-[.5rem] mx-auto h-10 flex items-center justify-center rounded-sm border-green-700 border-solid border-[1px] text-green-600 shadow-lg transition-transform duration-150 active:scale-95 focus:outline-none disabled:opacity-60"
                 >
-                  {selectedUserType === "officer" ? "Register new worker" : "Register new official"}
+                  {selectedUserType === "officer"
+                    ? "Register new officer"
+                    : "Register new official"}
                 </button>
               )}
             </div>

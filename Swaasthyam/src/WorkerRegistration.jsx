@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const WorkerRegistration = () => {
   const navigate = useNavigate();
+
+  // Stepper and voice states
   const [currentStep, setCurrentStep] = useState(1);
   const [isListening, setIsListening] = useState(false);
   const [healthVoiceMode, setHealthVoiceMode] = useState(false);
@@ -35,6 +37,8 @@ const WorkerRegistration = () => {
     currentMedications: "",
     vaccinationHistory: "",
     emergencyMedicalInfo: "",
+
+    // Employment
     employerName: "",
     jobCategory: "",
     workLocation: "",
@@ -48,16 +52,15 @@ const WorkerRegistration = () => {
   ];
 
   const handleNext = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 3) setCurrentStep((s) => s + 1);
   };
 
   const handlePrevious = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 1) setCurrentStep((s) => s - 1);
   };
 
   const handleBackToLogin = () => {
-    // Navigate back to login page
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleInputChange = (field, value) => {
@@ -68,10 +71,10 @@ const WorkerRegistration = () => {
   };
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     setFormData((prev) => ({
       ...prev,
-      idDocument: file,
+      idDocument: file || null,
     }));
   };
 
@@ -79,185 +82,465 @@ const WorkerRegistration = () => {
   const healthKeywordsDB = {
     english: {
       symptoms: [
-        'fever', 'headache', 'nausea', 'vomiting', 'diarrhea', 'constipation', 'cough', 'cold',
-        'sore throat', 'runny nose', 'body ache', 'joint pain', 'muscle pain', 'chest pain',
-        'abdominal pain', 'back pain', 'neck pain', 'dizziness', 'fatigue', 'weakness',
-        'shortness of breath', 'palpitations', 'high blood pressure', 'low blood pressure',
-        'diabetes', 'sugar', 'blood sugar', 'cholesterol', 'migraine', 'sinusitis', 'allergy',
-        'rash', 'itching', 'swelling', 'inflammation', 'infection', 'wound', 'cut', 'bruise',
-        'burn', 'fracture', 'sprain', 'insomnia', 'anxiety', 'depression', 'stress', 'panic attack',
-        'seizure', 'stroke', 'heart attack', 'asthma', 'bronchitis', 'pneumonia', 'tuberculosis',
-        'malaria', 'dengue', 'typhoid', 'jaundice', 'kidney stones', 'liver problems',
-        'stomach ulcer', 'gastritis', 'acidity', 'heartburn', 'bloating', 'gas', 'indigestion'
+        "fever",
+        "headache",
+        "nausea",
+        "vomiting",
+        "diarrhea",
+        "constipation",
+        "cough",
+        "cold",
+        "sore throat",
+        "runny nose",
+        "body ache",
+        "joint pain",
+        "muscle pain",
+        "chest pain",
+        "abdominal pain",
+        "back pain",
+        "neck pain",
+        "dizziness",
+        "fatigue",
+        "weakness",
+        "shortness of breath",
+        "palpitations",
+        "high blood pressure",
+        "low blood pressure",
+        "diabetes",
+        "sugar",
+        "blood sugar",
+        "cholesterol",
+        "migraine",
+        "sinusitis",
+        "allergy",
+        "rash",
+        "itching",
+        "swelling",
+        "inflammation",
+        "infection",
+        "wound",
+        "cut",
+        "bruise",
+        "burn",
+        "fracture",
+        "sprain",
+        "insomnia",
+        "anxiety",
+        "depression",
+        "stress",
+        "panic attack",
+        "seizure",
+        "stroke",
+        "heart attack",
+        "asthma",
+        "bronchitis",
+        "pneumonia",
+        "tuberculosis",
+        "malaria",
+        "dengue",
+        "typhoid",
+        "jaundice",
+        "kidney stones",
+        "liver problems",
+        "stomach ulcer",
+        "gastritis",
+        "acidity",
+        "heartburn",
+        "bloating",
+        "gas",
+        "indigestion",
       ],
       body_parts: [
-        'head', 'eye', 'ear', 'nose', 'mouth', 'throat', 'neck', 'shoulder', 'arm', 'hand',
-        'finger', 'chest', 'heart', 'lung', 'stomach', 'liver', 'kidney', 'leg', 'foot',
-        'knee', 'ankle', 'skin', 'hair', 'teeth', 'tongue', 'brain', 'spine', 'bone',
-        'muscle', 'blood', 'nerve'
+        "head",
+        "eye",
+        "ear",
+        "nose",
+        "mouth",
+        "throat",
+        "neck",
+        "shoulder",
+        "arm",
+        "hand",
+        "finger",
+        "chest",
+        "heart",
+        "lung",
+        "stomach",
+        "liver",
+        "kidney",
+        "leg",
+        "foot",
+        "knee",
+        "ankle",
+        "skin",
+        "hair",
+        "teeth",
+        "tongue",
+        "brain",
+        "spine",
+        "bone",
+        "muscle",
+        "blood",
+        "nerve",
       ],
       medications: [
-        'medicine', 'tablet', 'capsule', 'syrup', 'injection', 'drops', 'ointment', 'cream',
-        'antibiotic', 'painkiller', 'paracetamol', 'aspirin', 'insulin', 'surgery', 'operation',
-        'therapy', 'physiotherapy', 'exercise', 'diet', 'rest', 'hospital', 'clinic', 'doctor',
-        'checkup', 'test', 'scan', 'x-ray', 'blood test'
-      ]
+        "medicine",
+        "tablet",
+        "capsule",
+        "syrup",
+        "injection",
+        "drops",
+        "ointment",
+        "cream",
+        "antibiotic",
+        "painkiller",
+        "paracetamol",
+        "aspirin",
+        "insulin",
+        "surgery",
+        "operation",
+        "therapy",
+        "physiotherapy",
+        "exercise",
+        "diet",
+        "rest",
+        "hospital",
+        "clinic",
+        "doctor",
+        "checkup",
+        "test",
+        "scan",
+        "x-ray",
+        "blood test",
+      ],
     },
     hindi: {
       symptoms: [
-        'बुखार', 'सिरदर्द', 'जी मिचलाना', 'उल्टी', 'दस्त', 'कब्ज', 'खांसी', 'जुकाम',
-        'गले में दर्द', 'नाक बहना', 'बदन दर्द', 'जोड़ों में दर्द', 'सीने में दर्द', 'पेट दर्द',
-        'कमर दर्द', 'चक्कर आना', 'कमजोरी', 'सांस लेने में तकलीफ', 'धड़कन तेज', 'हाई ब्लड प्रेशर',
-        'शुगर', 'मधुमेह', 'कोलेस्ट्रॉल', 'माइग्रेन', 'एलर्जी', 'खुजली', 'सूजन', 'संक्रमण',
-        'घाव', 'चोट', 'फ्रैक्चर', 'नींद नहीं आना', 'चिंता', 'तनाव', 'दमा', 'मलेरिया',
-        'डेंगू', 'टाइफाइड', 'पीलिया', 'किडनी स्टोन', 'लिवर की समस्या', 'पेट का अल्सर',
-        'गैस', 'अपचन'
+        "बुखार",
+        "सिरदर्द",
+        "जी मिचलाना",
+        "उल्टी",
+        "दस्त",
+        "कब्ज",
+        "खांसी",
+        "जुकाम",
+        "गले में दर्द",
+        "नाक बहना",
+        "बदन दर्द",
+        "जोड़ों में दर्द",
+        "सीने में दर्द",
+        "पेट दर्द",
+        "कमर दर्द",
+        "चक्कर आना",
+        "कमजोरी",
+        "सांस लेने में तकलीफ",
+        "धड़कन तेज",
+        "हाई ब्लड प्रेशर",
+        "शुगर",
+        "मधुमेह",
+        "कोलेस्ट्रॉल",
+        "माइग्रेन",
+        "एलर्जी",
+        "खुजली",
+        "सूजन",
+        "संक्रमण",
+        "घाव",
+        "चोट",
+        "फ्रैक्चर",
+        "नींद नहीं आना",
+        "चिंता",
+        "तनाव",
+        "दमा",
+        "मलेरिया",
+        "डेंगू",
+        "टाइफाइड",
+        "पीलिया",
+        "किडनी स्टोन",
+        "लिवर की समस्या",
+        "पेट का अल्सर",
+        "गैस",
+        "अपचन",
       ],
       body_parts: [
-        'सिर', 'आंख', 'कान', 'नाक', 'मुंह', 'गला', 'गर्दन', 'कंधा', 'बांह', 'हाथ',
-        'उंगली', 'छाती', 'दिल', 'फेफड़े', 'पेट', 'जिगर', 'किडनी', 'पैर', 'पांव',
-        'घुटना', 'टखना', 'त्वचा', 'बाल', 'दांत', 'जीभ', 'दिमाग', 'रीढ़', 'हड्डी',
-        'मांस', 'खून', 'नस'
+        "सिर",
+        "आंख",
+        "कान",
+        "नाक",
+        "मुंह",
+        "गला",
+        "गर्दन",
+        "कंधा",
+        "बांह",
+        "हाथ",
+        "उंगली",
+        "छाती",
+        "दिल",
+        "फेफड़े",
+        "पेट",
+        "जिगर",
+        "किडनी",
+        "पैर",
+        "पांव",
+        "घुटना",
+        "टखना",
+        "त्वचा",
+        "बाल",
+        "दांत",
+        "जीभ",
+        "दिमाग",
+        "रीढ़",
+        "हड्डी",
+        "मांस",
+        "खून",
+        "नस",
       ],
       medications: [
-        'दवा', 'गोली', 'कैप्सूल', 'शरबत', 'इंजेक्शन', 'बूंदें', 'मरहम', 'क्रीम',
-        'एंटीबायोटिक', 'दर्द निवारक', 'पैरासिटामोल', 'एस्पिरिन', 'इंसुलिन', 'सर्जरी',
-        'ऑपरेशन', 'थेरेपी', 'व्यायाम', 'डाइट', 'आराम', 'अस्पताल', 'क्लिनिक', 'डॉक्टर',
-        'जांच', 'टेस्ट', 'स्कैन', 'एक्स-रे', 'खून की जांच'
-      ]
+        "दवा",
+        "गोली",
+        "कैप्सूल",
+        "शरबत",
+        "इंजेक्शन",
+        "बूंदें",
+        "मरहम",
+        "क्रीम",
+        "एंटीबायोटिक",
+        "दर्द निवारक",
+        "पैरासिटामोल",
+        "एस्पिरिन",
+        "इंसुलिन",
+        "सर्जरी",
+        "ऑपरेशन",
+        "थेरेपी",
+        "व्यायाम",
+        "डाइट",
+        "आराम",
+        "अस्पताल",
+        "क्लिनिक",
+        "डॉक्टर",
+        "जांच",
+        "टेस्ट",
+        "स्कैन",
+        "एक्स-रे",
+        "खून की जांच",
+      ],
     },
     malayalam: {
       symptoms: [
-        'പനി', 'തലവേദന', 'ഓക്കാനം', 'ഛർദ്ദി', 'വയറിളക്കം', 'മലബന്ധം', 'ചുമ', 'ജലദോഷം',
-        'തൊണ്ടവേദന', 'മൂക്കൊലിപ്പ്', 'ശരീരവേദന', 'സന്ധിവേദന', 'നെഞ്ചുവേദന', 'വയറുവേദന',
-        'അരയിൽ വേദന', 'തലകറക്കം', 'ക്ഷീണം', 'ശ്വാസതടസ്സം', 'ഹൃദയമിടിപ്പ്', 'ഉയർന്ന രക്തസമ്മർദ്ദം',
-        'പ്രമേഹം', 'കൊളസ്ട്രോൾ', 'മൈഗ്രേൻ', 'അലർജി', 'ചൊറിച്ചിൽ', 'വീക്കം', 'അണുബാധ',
-        'മുറിവ്', 'പരിക്ക്', 'അസ്ഥിഭഗ്നം', 'ഉറക്കമില്ലായ്മ', 'ഉത്കണ്ഠ', 'സമ്മർദ്ദം',
-        'ആസ്ത്മ', 'മലേറിയ', 'ഡെങ്കി', 'ടൈഫോയ്ഡ്', 'മഞ്ഞപ്പിത്തം', 'വൃക്കയിലെ കല്ല്',
-        'കരൾ പ്രശ്നങ്ങൾ', 'വയറ്റിലെ അൾസർ', 'വാതകം', 'ദഹനക്കേട്'
+        "പനി",
+        "തലവേദന",
+        "ഓക്കാനം",
+        "ഛർദ്ദി",
+        "വയറിളക്കം",
+        "മലബന്ധം",
+        "ചുമ",
+        "ജലദോഷം",
+        "തൊണ്ടവേദന",
+        "മൂക്കൊലിപ്പ്",
+        "ശരീരവേദന",
+        "സന്ധിവേദന",
+        "നെഞ്ചുവേദന",
+        "വയറുവേദന",
+        "അരയിൽ വേദന",
+        "തലകറക്കം",
+        "ക്ഷീണം",
+        "ശ്വാസതടസ്സം",
+        "ഹൃദയമിടിപ്പ്",
+        "ഉയർന്ന രക്തസമ്മർദ്ദം",
+        "പ്രമേഹം",
+        "കൊളസ്ട്രോൾ",
+        "മൈഗ്രേൻ",
+        "അലർജി",
+        "ചൊറിച്ചിൽ",
+        "വീക്കം",
+        "അണുബാധ",
+        "മുറിവ്",
+        "പരിക്ക്",
+        "അസ്ഥിഭഗ്നം",
+        "ഉറക്കമില്ലായ്മ",
+        "ഉത്കണ്ഠ",
+        "സമ്മർദ്ദം",
+        "ആസ്ത്മ",
+        "മലേറിയ",
+        "ഡെങ്കി",
+        "ടൈഫോയ്ഡ്",
+        "മഞ്ഞപ്പിത്തം",
+        "വൃക്കയിലെ കല്ല്",
+        "കരൾ പ്രശ്നങ്ങൾ",
+        "വയറ്റിലെ അൾസർ",
+        "വാതകം",
+        "ദഹനക്കേട്",
       ],
       body_parts: [
-        'തല', 'കണ്ണ്', 'കാതു്', 'മൂക്ക്', 'വായ', 'തൊണ്ട', 'കഴുത്ത്', 'തോൾ', 'കൈ',
-        'വിരൽ', 'നെഞ്ച്', 'ഹൃദയം', 'ശ്വാസകോശം', 'വയർ', 'കരൾ', 'വൃക്ക', 'കാൽ',
-        'പാദം', 'മുട്ട്', 'കണങ്കാൽ', 'ചർമ്മം', 'മുടി', 'പല്ല്', 'നാവ്', 'തലച്ചോറ്',
-        'നട്ടെല്ല്', 'എല്ല്', 'പേശി', 'രക്തം', 'നാഡി'
+        "തല",
+        "കണ്ണ്",
+        "കാതു്",
+        "മൂക്ക്",
+        "വായ",
+        "തൊണ്ട",
+        "കഴുത്ത്",
+        "തോൾ",
+        "കൈ",
+        "വിരൽ",
+        "നെഞ്ച്",
+        "ഹൃദയം",
+        "ശ്വാസകോശം",
+        "വയർ",
+        "കരൾ",
+        "വൃക്ക",
+        "കാൽ",
+        "പാദം",
+        "മുട്ട്",
+        "കണങ്കാൽ",
+        "ചർമ്മം",
+        "മുടി",
+        "പല്ല്",
+        "നാവ്",
+        "തലച്ചോറ്",
+        "നട്ടെല്ല്",
+        "എല്ല്",
+        "പേശി",
+        "രക്തം",
+        "നാഡി",
       ],
       medications: [
-        'മരുന്ന്', 'ഗുളിക', 'കാപ്സ്യൂൾ', 'സിറപ്പ്', 'കുത്തിവയ്പ്പ്', 'തുള്ളി', 'തൈലം',
-        'ക്രീം', 'ആൻറിബയോട്ടിക്', 'വേദനസംഹാരി', 'പാരസെറ്റമോൾ', 'ആസ്പിരിൻ', 'ഇൻസുലിൻ',
-        'ശസ്ത്രക്രിയ', 'ഓപ്പറേഷൻ', 'ചികിത്സ', 'വ്യായാമം', 'ആഹാരക്രമം', 'വിശ്രമം',
-        'ആശുപത്രി', 'ക്ലിനിക്ക്', 'ഡോക്ടർ', 'പരിശോധന', 'പരിക്ക്', 'സ്കാൻ', 'എക്സ്-റേ',
-        'രക്തപരിശോധന'
-      ]
-    }
+        "മരുന്ന്",
+        "ഗുളിക",
+        "കാപ്സ്യൂൾ",
+        "സിറപ്പ്",
+        "കുത്തിവയ്പ്പ്",
+        "തുള്ളി",
+        "തൈലം",
+        "ക്രീം",
+        "ആൻറിബയോട്ടിക്",
+        "വേദനസംഹാരി",
+        "പാരസെറ്റമോൾ",
+        "ആസ്പിരിൻ",
+        "ഇൻസുലിൻ",
+        "ശസ്ത്രക്രിയ",
+        "ഓപ്പറേഷൻ",
+        "ചികിത്സ",
+        "വ്യായാമം",
+        "ആഹാരക്രമം",
+        "വിശ്രമം",
+        "ആശുപത്രി",
+        "ക്ലിനിക്ക്",
+        "ഡോക്ടർ",
+        "പരിശോധന",
+        "പരിക്ക്",
+        "സ്കാൻ",
+        "എക്സ്-റേ",
+        "രക്തപരിശോധന",
+      ],
+    },
   };
 
   // Health keyword extraction function
   const extractHealthKeywords = (text) => {
     const keywords = [];
     const lowerText = text.toLowerCase();
-    
-    // Check each language and category
+
     Object.entries(healthKeywordsDB).forEach(([language, categories]) => {
       Object.entries(categories).forEach(([category, terms]) => {
-        terms.forEach(term => {
+        terms.forEach((term) => {
           const lowerTerm = term.toLowerCase();
           if (lowerText.includes(lowerTerm)) {
-            // Determine severity based on context
-            let severity = 'mild';
-            if (lowerText.includes('severe') || lowerText.includes('acute') || 
-                lowerText.includes('chronic') || lowerText.includes('critical')) {
-              severity = 'severe';
-            } else if (lowerText.includes('moderate') || lowerText.includes('bad')) {
-              severity = 'moderate';
+            let severity = "mild";
+            if (
+              lowerText.includes("severe") ||
+              lowerText.includes("acute") ||
+              lowerText.includes("chronic") ||
+              lowerText.includes("critical")
+            ) {
+              severity = "severe";
+            } else if (
+              lowerText.includes("moderate") ||
+              lowerText.includes("bad")
+            ) {
+              severity = "moderate";
             }
-            
-            // Calculate confidence score
-            const confidence = Math.min(0.9, 0.5 + (term.length / 20));
-            
+            const confidence = Math.min(0.9, 0.5 + term.length / 20);
             keywords.push({
               keyword: term,
               language,
-              category: category === 'symptoms' ? 'symptom' : 
-                       category === 'body_parts' ? 'body_part' : 
-                       category === 'medications' ? 'medication' : category,
+              category:
+                category === "symptoms"
+                  ? "symptom"
+                  : category === "body_parts"
+                  ? "body_part"
+                  : category === "medications"
+                  ? "medication"
+                  : category,
               severity,
-              confidence_score: parseFloat(confidence.toFixed(1))
+              confidence_score: parseFloat(confidence.toFixed(1)),
             });
           }
         });
       });
     });
-    
-    // Remove duplicates based on keyword
-    const uniqueKeywords = keywords.filter((keyword, index, self) => 
-      index === self.findIndex(k => k.keyword === keyword.keyword)
+
+    const uniqueKeywords = keywords.filter(
+      (kw, idx, self) => idx === self.findIndex((k) => k.keyword === kw.keyword)
     );
-    
     return uniqueKeywords;
   };
 
-  // Generate CSV from keywords
   const generateCSV = (keywords) => {
-    if (!keywords.length) return 'keyword,language,category,severity,confidence_score\n';
-    
-    const csvHeader = 'keyword,language,category,severity,confidence_score\n';
-    const csvRows = keywords.map(kw => 
-      `${kw.keyword},${kw.language},${kw.category},${kw.severity},${kw.confidence_score}`
-    ).join('\n');
-    
-    return csvHeader + csvRows;
+    if (!keywords.length)
+      return "keyword,language,category,severity,confidence_score\n";
+    const header = "keyword,language,category,severity,confidence_score\n";
+    const rows = keywords
+      .map(
+        (k) =>
+          `${k.keyword},${k.language},${k.category},${k.severity},${k.confidence_score}`
+      )
+      .join("\n");
+    return header + rows;
   };
 
-  // Download CSV file
-  const downloadCSV = (csvContent, filename = 'health_keywords.csv') => {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+  const downloadCSV = (csvContent, filename = "health_keywords.csv") => {
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
-  // Analyze health text and extract keywords
   const analyzeHealthText = () => {
     const healthTexts = [
       formData.knownAllergies,
       formData.chronicConditions,
       formData.currentMedications,
       formData.vaccinationHistory,
-      formData.emergencyMedicalInfo
-    ].filter(text => text && text.trim().length > 0);
-    
-    if (healthTexts.length === 0) {
-      alert('Please enter some health information first.');
+      formData.emergencyMedicalInfo,
+    ].filter((t) => t && t.trim().length > 0);
+
+    if (!healthTexts.length) {
+      alert("Please enter some health information first.");
       return;
     }
-    
-    const combinedText = healthTexts.join(' ');
-    const extractedKeywords = extractHealthKeywords(combinedText);
-    
-    if (extractedKeywords.length === 0) {
-      alert('No health-related keywords found in the text.');
+
+    const combinedText = healthTexts.join(" ");
+    const kws = extractHealthKeywords(combinedText);
+
+    if (!kws.length) {
+      alert("No health-related keywords found in the text.");
       return;
     }
-    
-    setExtractedKeywords(extractedKeywords);
+
+    setExtractedKeywords(kws);
     setShowKeywordAnalysis(true);
-    
-    // Auto-generate and download CSV
-    const csvContent = generateCSV(extractedKeywords);
-    downloadCSV(csvContent, `health_keywords_${Date.now()}.csv`);
+
+    const csv = generateCSV(kws);
+    downloadCSV(csv, `health_keywords_${Date.now()}.csv`);
   };
 
-  // Fixed voice input functionality
+  // Voice input for a specific field
   const startVoiceInput = (fieldName) => {
-    // Check for browser support
     if (
       !("webkitSpeechRecognition" in window) &&
       !("SpeechRecognition" in window)
@@ -268,74 +551,59 @@ const WorkerRegistration = () => {
       return;
     }
 
-    // Stop any existing recognition
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
+    if (recognitionRef.current) recognitionRef.current.stop();
 
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
 
-    // Configure recognition settings
     recognition.lang = "en-US";
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    // Store reference
     recognitionRef.current = recognition;
-
-    // Set listening state
     setIsListening(true);
     setActiveField(fieldName);
 
-    // Handle successful recognition
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       const currentValue = formData[fieldName] || "";
       const newValue = currentValue
         ? `${currentValue} ${transcript}`
         : transcript;
-
       handleInputChange(fieldName, newValue);
 
-      // Reset states
       setIsListening(false);
       setActiveField(null);
       recognitionRef.current = null;
     };
 
-    // Handle errors
     recognition.onerror = (event) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
       setActiveField(null);
       recognitionRef.current = null;
 
-      let errorMessage =
-        "Voice input failed. Please try again or type manually.";
-      if (event.error === "no-speech") {
-        errorMessage = "No speech detected. Please try again.";
-      } else if (event.error === "audio-capture") {
-        errorMessage =
+      let msg = "Voice input failed. Please try again or type manually.";
+      if (event.error === "no-speech")
+        msg = "No speech detected. Please try again.";
+      else if (event.error === "audio-capture")
+        msg =
           "Microphone access denied. Please enable microphone and try again.";
-      }
-      alert(errorMessage);
+      alert(msg);
     };
 
-    // Handle recognition end
     recognition.onend = () => {
       setIsListening(false);
       setActiveField(null);
       recognitionRef.current = null;
     };
 
-    // Start recognition
     try {
       recognition.start();
-    } catch (error) {
-      console.error("Failed to start recognition:", error);
+    } catch (err) {
+      console.error("Failed to start recognition:", err);
       setIsListening(false);
       setActiveField(null);
       recognitionRef.current = null;
@@ -351,17 +619,14 @@ const WorkerRegistration = () => {
       alert("Voice input is not supported in your browser.");
       return;
     }
-
     setHealthVoiceMode(true);
     alert(
       'Health Voice Mode activated! Speak your health information naturally. Say things like "I am allergic to penicillin" or "I have diabetes".'
     );
-
-    // You can implement more sophisticated NLP here
-    setTimeout(() => {
-      setHealthVoiceMode(false);
-    }, 30000); // Auto-disable after 30 seconds
+    setTimeout(() => setHealthVoiceMode(false), 30000);
   };
+
+  // Renders
 
   const renderPersonalInfo = () => (
     <div className="space-y-6">
@@ -763,8 +1028,9 @@ const WorkerRegistration = () => {
           🧠 Advanced Health Analysis (AI-Powered)
         </h4>
         <p className="text-sm text-gray-600 mb-4">
-          Automatically extract and categorize health keywords from your entered information. 
-          Supports English, Hindi (हिन्दी), and Malayalam (മലയാളം) languages.
+          Automatically extract and categorize health keywords from your entered
+          information. Supports English, Hindi (हिन्दी), and Malayalam (മലയാളം)
+          languages.
         </p>
         <div className="flex gap-4 mb-4">
           <button
@@ -780,43 +1046,63 @@ const WorkerRegistration = () => {
               onClick={() => setShowKeywordAnalysis(!showKeywordAnalysis)}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-all"
             >
-              {showKeywordAnalysis ? "Hide Analysis" : "Show Analysis"} ({extractedKeywords.length} keywords)
+              {showKeywordAnalysis ? "Hide Analysis" : "Show Analysis"} (
+              {extractedKeywords.length} keywords)
             </button>
           )}
         </div>
-        
+
         {showKeywordAnalysis && extractedKeywords.length > 0 && (
           <div className="mt-4 p-4 border border-green-200 rounded-lg bg-green-50">
-            <h5 className="text-lg font-bold text-green-800 mb-3">Extracted Health Keywords:</h5>
+            <h5 className="text-lg font-bold text-green-800 mb-3">
+              Extracted Health Keywords:
+            </h5>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
               {extractedKeywords.map((keyword, index) => (
-                <div key={index} className="p-2 bg-white border border-green-300 rounded-lg">
+                <div
+                  key={index}
+                  className="p-2 bg-white border border-green-300 rounded-lg"
+                >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <span className="font-semibold text-green-700">{keyword.keyword}</span>
+                      <span className="font-semibold text-green-700">
+                        {keyword.keyword}
+                      </span>
                       <div className="text-xs text-gray-600 mt-1">
-                        <span className={`px-2 py-1 rounded ${
-                          keyword.language === 'english' ? 'bg-blue-100 text-blue-700' :
-                          keyword.language === 'hindi' ? 'bg-orange-100 text-orange-700' :
-                          'bg-purple-100 text-purple-700'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded ${
+                            keyword.language === "english"
+                              ? "bg-blue-100 text-blue-700"
+                              : keyword.language === "hindi"
+                              ? "bg-orange-100 text-orange-700"
+                              : "bg-purple-100 text-purple-700"
+                          }`}
+                        >
                           {keyword.language}
                         </span>
-                        <span className={`ml-1 px-2 py-1 rounded ${
-                          keyword.category === 'symptom' ? 'bg-red-100 text-red-700' :
-                          keyword.category === 'body_part' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-green-100 text-green-700'
-                        }`}>
+                        <span
+                          className={`ml-1 px-2 py-1 rounded ${
+                            keyword.category === "symptom"
+                              ? "bg-red-100 text-red-700"
+                              : keyword.category === "body_part"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-green-100 text-green-700"
+                          }`}
+                        >
                           {keyword.category}
                         </span>
                       </div>
                     </div>
                     <div className="text-xs text-right">
-                      <div className={`px-2 py-1 rounded ${
-                        keyword.severity === 'severe' ? 'bg-red-100 text-red-700' :
-                        keyword.severity === 'moderate' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-green-100 text-green-700'
-                      }`}>
+                      <div
+                        className={`px-2 py-1 rounded ${
+                          keyword.severity === "severe"
+                            ? "bg-red-100 text-red-700"
+                            : keyword.severity === "moderate"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
+                      >
                         {keyword.severity}
                       </div>
                       <div className="text-gray-500 mt-1">
@@ -827,30 +1113,47 @@ const WorkerRegistration = () => {
                 </div>
               ))}
             </div>
+
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <h6 className="font-semibold text-blue-800 mb-2">Analysis Summary:</h6>
+              <h6 className="font-semibold text-blue-800 mb-2">
+                Analysis Summary:
+              </h6>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div className="text-center">
                   <div className="font-bold text-lg text-blue-600">
-                    {extractedKeywords.filter(k => k.category === 'symptom').length}
+                    {
+                      extractedKeywords.filter((k) => k.category === "symptom")
+                        .length
+                    }
                   </div>
                   <div className="text-gray-600">Symptoms</div>
                 </div>
                 <div className="text-center">
                   <div className="font-bold text-lg text-yellow-600">
-                    {extractedKeywords.filter(k => k.category === 'body_part').length}
+                    {
+                      extractedKeywords.filter(
+                        (k) => k.category === "body_part"
+                      ).length
+                    }
                   </div>
                   <div className="text-gray-600">Body Parts</div>
                 </div>
                 <div className="text-center">
                   <div className="font-bold text-lg text-green-600">
-                    {extractedKeywords.filter(k => k.category === 'medication').length}
+                    {
+                      extractedKeywords.filter(
+                        (k) => k.category === "medication"
+                      ).length
+                    }
                   </div>
                   <div className="text-gray-600">Medications</div>
                 </div>
                 <div className="text-center">
                   <div className="font-bold text-lg text-red-600">
-                    {extractedKeywords.filter(k => k.severity === 'severe').length}
+                    {
+                      extractedKeywords.filter((k) => k.severity === "severe")
+                        .length
+                    }
                   </div>
                   <div className="text-gray-600">Severe Issues</div>
                 </div>
@@ -858,10 +1161,18 @@ const WorkerRegistration = () => {
             </div>
           </div>
         )}
-        
+
         <div className="mt-4 text-xs text-gray-500">
-          <p><strong>How it works:</strong> The AI analyzes your health information and automatically identifies medical terms, symptoms, body parts, and medications in multiple languages. It then generates a structured CSV file for healthcare providers.</p>
-          <p className="mt-1"><strong>Languages supported:</strong> English, Hindi (हिन्दी), Malayalam (മലയാളം)</p>
+          <p>
+            <strong>How it works:</strong> The AI analyzes your health
+            information and automatically identifies medical terms, symptoms,
+            body parts, and medications in multiple languages, then generates a
+            structured CSV for providers.
+          </p>
+          <p className="mt-1">
+            <strong>Languages supported:</strong> English, Hindi (हिन्दी),
+            Malayalam (മലയാളം)
+          </p>
         </div>
       </div>
     </div>
@@ -1002,11 +1313,13 @@ const WorkerRegistration = () => {
   };
 
   const handleSubmitRegistration = () => {
-    // Handle final submission
+    // Final submission hook — integrate API here
     console.log("Submitting registration:", formData);
     alert(
       "Registration submitted successfully! You will receive your QR ID shortly."
     );
+    // Navigate back to Officer Dashboard as requested
+    navigate("/officer");
   };
 
   return (
@@ -1016,7 +1329,7 @@ const WorkerRegistration = () => {
           Worker Registration
         </p>
 
-        {/* Stepper Component */}
+        {/* Stepper */}
         <div className="w-full max-w-2xl mx-auto mb-8">
           <div className="flex items-center justify-between mb-8">
             {steps.map((step, index) => {
@@ -1048,13 +1361,12 @@ const WorkerRegistration = () => {
                     </span>
                   </div>
 
-                  {/* Connector Line */}
+                  {/* Connector */}
                   {index < steps.length - 1 && (
                     <div
-                      className={`
-                        w-24 h-1 mx-4 rounded transition-all duration-200
-                        ${isCompleted ? "bg-blue-600" : "bg-gray-300"}
-                      `}
+                      className={`w-24 h-1 mx-4 rounded transition-all duration-200 ${
+                        isCompleted ? "bg-blue-600" : "bg-gray-300"
+                      }`}
                     />
                   )}
                 </div>
@@ -1063,14 +1375,14 @@ const WorkerRegistration = () => {
           </div>
         </div>
 
-        {/* Step Content Area */}
+        {/* Content */}
         <div className="w-full max-w-4xl mx-auto mb-8">
           <div className="border-[1px] border-blue-100 border-solid shadow-2xl rounded-lg p-6 min-h-[400px] bg-white">
             {renderStepContent()}
           </div>
         </div>
 
-        {/* Controls at the end of the page */}
+        {/* Footer controls */}
         <div className="flex justify-center gap-4 w-full max-w-2xl">
           <button
             onClick={currentStep === 1 ? handleBackToLogin : handlePrevious}
