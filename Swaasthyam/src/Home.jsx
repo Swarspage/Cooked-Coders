@@ -23,7 +23,7 @@ const Home = () => {
         </button>
       </nav>
       <article className="h-[85vh] grid grid-rows-3 px-30 text-white ">
-        <p className="text-[3rem] flex items-end font-semibold">
+        <p className="text-[3rem] flex items-end font-bold bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent drop-shadow-2xl shadow-black/50">
           Welcome to Swaasthyam..!
         </p>
 
