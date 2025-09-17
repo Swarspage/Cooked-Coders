@@ -11,7 +11,8 @@ function App() {
   return (
     <Routes>
       {/* Public */}
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<LoginPage />} />
 
       {/* Officer & Official registrations */}

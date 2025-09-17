@@ -7,7 +7,7 @@ const LoadingAnimation = ({ message = "Loading..." }) => {
         {/* Logo */}
         <div className="mb-8">
           <img
-            src="./src/assets/logo 2.png"
+            src="/Cooked-Coders/assets/logo 2.png"
             alt="Swaasthyam"
             className="h-16 w-16 mx-auto animate-pulse"
           />

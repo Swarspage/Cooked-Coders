@@ -192,7 +192,7 @@ export default function OfficerDashboard() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <img
-              src="./src/assets/logo 2.png"
+              src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
               className="h-9 w-9 object-contain"
             />
@@ -237,7 +237,7 @@ export default function OfficerDashboard() {
       <aside className="hidden md:flex w-60 shrink-0 text-white bg-gradient-to-b from-blue-700 to-black flex-col">
         <div className="px-4 py-5 flex items-center gap-3">
           <img
-            src="./src/assets/logo 2.png"
+            src="/Cooked-Coders/assets/logo 2.png"
             alt="Swaasthyam Logo"
             className="h-9 w-9 object-contain rounded-md bg-white/20 p-1"
           />

@@ -83,7 +83,7 @@ const LoginPage = () => {
           <div className="mb-4">
             <img
               className="h-16 w-16 object-contain"
-              src="./src/assets/logo 2.png"
+              src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
             />
           </div>
@@ -234,7 +234,7 @@ const LoginPage = () => {
                 className="w-full h-12 flex items-center justify-center border border-blue-200 rounded-lg text-sm text-gray-700 shadow-sm transition-all duration-200 hover:bg-blue-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <img
-                  src="./src/assets/lock.png"
+                  src="/Cooked-Coders/assets/lock.png"
                   className="h-4 w-4 mr-3"
                   alt="DigiLocker"
                 />
@@ -246,7 +246,7 @@ const LoginPage = () => {
                 className="w-full h-12 flex items-center justify-center border border-gray-300 rounded-lg text-sm text-gray-700 shadow-sm transition-all duration-200 hover:bg-gray-50 active:scale-98 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <img
-                  src="./src/assets/qr.png"
+                  src="/Cooked-Coders/assets/qr.png"
                   className="h-4 w-4 mr-3"
                   alt="QR Code"
                 />
@@ -260,7 +260,7 @@ const LoginPage = () => {
               className="w-full h-32 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-blue-400 text-gray-700 bg-blue-50 transition-all duration-200 hover:bg-blue-100 active:scale-98 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
             >
               <img
-                src="./src/assets/camera.png"
+                src="/Cooked-Coders/assets/camera.png"
                 className="h-8 w-8 mb-2"
                 alt="Camera"
               />

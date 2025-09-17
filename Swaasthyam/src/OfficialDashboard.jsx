@@ -228,7 +228,7 @@ const OfficialDashboard = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <img
-              src="./src/assets/logo 2.png"
+              src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
               className="w-8 h-8 object-contain mr-3"
             />
@@ -315,7 +315,7 @@ const OfficialDashboard = () => {
       >
         <div className="flex items-center mb-8">
           <img
-            src="./src/assets/logo 2.png"
+            src="/Cooked-Coders/assets/logo 2.png"
             alt="Swaasthyam Logo"
             className="w-8 h-8 object-contain bg-white rounded p-1 mr-3"
           />

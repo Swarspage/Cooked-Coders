@@ -406,7 +406,7 @@ const MigrantDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
-              src="./src/assets/logo 2.png"
+              src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
               className="w-8 h-8 object-contain"
             />
@@ -480,7 +480,7 @@ const MigrantDashboard = () => {
         <div className="p-6 border-b border-blue-600">
           <div className="flex items-center space-x-3">
             <img
-              src="./src/assets/logo 2.png"
+              src="/Cooked-Coders/assets/logo 2.png"
               alt="Swaasthyam Logo"
               className="w-8 h-8 object-contain rounded-lg bg-white p-1"
             />
