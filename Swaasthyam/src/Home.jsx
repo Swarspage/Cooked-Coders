@@ -24,7 +24,7 @@ const Home = () => {
       </nav>
       <article className="h-[85vh] grid grid-rows-3 px-30 text-white ">
         <p className="text-[3rem] flex items-end font-bold text-white" style={{
-          textShadow: '0 0 5px rgba(255,255,255,0.4), 2px 2px 4px rgba(0,0,0,0.6)'
+          textShadow: '3px 3px 6px rgba(0,0,0,0.8), 1px 1px 2px rgba(0,0,0,0.9)'
         }}>
           Welcome to Swaasthyam..!
         </p>
