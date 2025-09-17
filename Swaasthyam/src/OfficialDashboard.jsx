@@ -212,9 +212,35 @@ const OfficialDashboard = () => {
       "Diabetes",
       "Skin Infections",
       "Hypertension",
+      "Malaria",
+      "Dengue",
     ],
-    diseaseValues: [45, 75, 35, 25, 55, 65],
+    diseaseValues: [45, 75, 35, 25, 55, 65, 30, 40],
+    diseaseColors: ["#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4", "#3b82f6", "#8b5cf6", "#ec4899"],
     complianceData: [95, 92, 88, 90, 94, 96, 93, 91, 89, 92, 94, 95],
+    monthlyLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    healthStatusData: [
+      { status: "Fit", count: 12450, percentage: 80.5, color: "#22c55e" },
+      { status: "Attention", count: 2100, percentage: 13.6, color: "#f59e0b" },
+      { status: "Critical", count: 870, percentage: 5.6, color: "#ef4444" },
+      { status: "Pending", count: 485, percentage: 3.1, color: "#6b7280" }
+    ],
+    districtData: [
+      { name: "Ernakulam", workers: 3420, alerts: 3, healthScore: 85, color: "#22c55e" },
+      { name: "Thiruvananthapuram", workers: 2850, alerts: 4, healthScore: 78, color: "#f59e0b" },
+      { name: "Kozhikode", workers: 2180, alerts: 2, healthScore: 88, color: "#22c55e" },
+      { name: "Thrissur", workers: 1950, alerts: 1, healthScore: 92, color: "#22c55e" },
+      { name: "Kollam", workers: 1680, alerts: 3, healthScore: 82, color: "#f59e0b" },
+      { name: "Kannur", workers: 1420, alerts: 2, healthScore: 86, color: "#22c55e" },
+      { name: "Palakkad", workers: 1280, alerts: 1, healthScore: 90, color: "#22c55e" },
+      { name: "Malappuram", workers: 1150, alerts: 2, healthScore: 84, color: "#f59e0b" },
+      { name: "Kasaragod", workers: 980, alerts: 1, healthScore: 87, color: "#22c55e" },
+      { name: "Wayanad", workers: 750, alerts: 0, healthScore: 94, color: "#22c55e" },
+      { name: "Idukki", workers: 680, alerts: 1, healthScore: 89, color: "#22c55e" },
+      { name: "Pathanamthitta", workers: 520, alerts: 0, healthScore: 91, color: "#22c55e" },
+      { name: "Alappuzha", workers: 480, alerts: 1, healthScore: 88, color: "#22c55e" },
+      { name: "Kottayam", workers: 420, alerts: 0, healthScore: 93, color: "#22c55e" }
+    ]
   };
 
   if (isLoading) {
@@ -810,82 +836,236 @@ const OfficialDashboard = () => {
         {/* Analytics Tab */}
         {selectedTab === "analytics" && (
           <div className="p-4 md:p-6">
-            <div className="bg-blue-600 text-white p-4 md:p-6 rounded-lg mb-6">
-              <h1 className="text-xl md:text-2xl font-bold mb-2">Health Analytics</h1>
-              <p className="text-blue-100 text-sm md:text-base">Disease Trend Analysis</p>
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 md:p-6 rounded-lg mb-6">
+              <h1 className="text-xl md:text-2xl font-bold mb-2">📊 Health Analytics Dashboard</h1>
+              <p className="text-blue-100 text-sm md:text-base">Comprehensive health data visualization and insights</p>
             </div>
 
-            {/* Disease Trend Analysis - Bar Chart */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <h3 className="font-semibold text-lg mb-4">
-                Disease Trend Analysis
-              </h3>
-              <div className="flex items-end space-x-2 h-64">
-                {chartData.diseaseCategories.map((category, index) => (
-                  <div
-                    key={category}
-                    className="flex-1 flex flex-col items-center"
-                  >
+            {/* Overview Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500">
+                <div className="text-2xl font-bold text-green-600">15,420</div>
+                <div className="text-gray-600 text-sm">Total Workers</div>
+                <div className="text-green-600 text-xs">↑ 5.2% from last month</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <div className="text-2xl font-bold text-blue-600">92.3%</div>
+                <div className="text-gray-600 text-sm">Health Compliance</div>
+                <div className="text-blue-600 text-xs">↑ 2.1% from last month</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
+                <div className="text-2xl font-bold text-orange-600">23</div>
+                <div className="text-gray-600 text-sm">Active Alerts</div>
+                <div className="text-orange-600 text-xs">↓ 3 from last week</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500">
+                <div className="text-2xl font-bold text-purple-600">14</div>
+                <div className="text-gray-600 text-sm">Districts Covered</div>
+                <div className="text-purple-600 text-xs">100% coverage</div>
+              </div>
+            </div>
+
+            {/* Charts Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* Enhanced Disease Trend Analysis - Bar Chart */}
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="font-semibold text-lg mb-4 flex items-center">
+                  🦠 Disease Trend Analysis
+                  <span className="ml-2 text-sm text-gray-500">(Cases per 1000 workers)</span>
+                </h3>
+                <div className="flex items-end space-x-2 h-64 mb-4">
+                  {chartData.diseaseCategories.map((category, index) => (
                     <div
-                      className="bg-blue-600 w-full rounded-t-lg transition-all hover:bg-blue-700"
-                      style={{
-                        height: `${
-                          (chartData.diseaseValues[index] / 80) * 100
-                        }%`,
-                      }}
-                    ></div>
-                    <div className="text-xs text-gray-600 mt-2 text-center transform -rotate-45 origin-center">
-                      {category}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Health Record Compliance - Line Chart */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <h3 className="font-semibold text-lg mb-4">
-                🏥 Health Record Compliance
-              </h3>
-              <div className="text-sm text-gray-600 mb-2">
-                Compliance Rate: 95%
-              </div>
-              <div className="relative h-32 bg-gray-50 rounded-lg p-4">
-                <div className="flex items-end space-x-1 h-full">
-                  {chartData.complianceData.map((value, index) => (
-                    <div key={index} className="flex-1 relative">
+                      key={category}
+                      className="flex-1 flex flex-col items-center group cursor-pointer"
+                    >
                       <div
-                        className="bg-green-500 w-full rounded-t-sm"
-                        style={{ height: `${value}%` }}
-                      ></div>
+                        className="w-full rounded-t-lg transition-all duration-300 hover:opacity-80 relative"
+                        style={{
+                          height: `${(chartData.diseaseValues[index] / 80) * 100}%`,
+                          backgroundColor: chartData.diseaseColors[index]
+                        }}
+                        title={`${category}: ${chartData.diseaseValues[index]} cases`}
+                      >
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          {chartData.diseaseValues[index]}
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-600 mt-2 text-center transform -rotate-45 origin-center w-16">
+                        {category}
+                      </div>
                     </div>
                   ))}
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 p-2">
-                  <span>Jan</span>
-                  <span>Feb</span>
-                  <span>Mar</span>
-                  <span>Apr</span>
-                  <span>May</span>
-                  <span>Jun</span>
-                  <span>Jul</span>
-                  <span>Aug</span>
-                  <span>Sep</span>
+                <div className="text-sm text-gray-600">
+                  <span className="font-medium">Total Cases:</span> {chartData.diseaseValues.reduce((a, b) => a + b, 0)} across all categories
+                </div>
+              </div>
+
+              {/* Health Status Distribution - Pie Chart */}
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="font-semibold text-lg mb-4">📊 Health Status Distribution</h3>
+                <div className="flex items-center justify-center h-64">
+                  <div className="relative w-48 h-48">
+                    {/* Pie Chart using CSS */}
+                    <div className="absolute inset-0 rounded-full" style={{
+                      background: `conic-gradient(
+                        ${chartData.healthStatusData[0].color} 0deg ${chartData.healthStatusData[0].percentage * 3.6}deg,
+                        ${chartData.healthStatusData[1].color} ${chartData.healthStatusData[0].percentage * 3.6}deg ${(chartData.healthStatusData[0].percentage + chartData.healthStatusData[1].percentage) * 3.6}deg,
+                        ${chartData.healthStatusData[2].color} ${(chartData.healthStatusData[0].percentage + chartData.healthStatusData[1].percentage) * 3.6}deg ${(chartData.healthStatusData[0].percentage + chartData.healthStatusData[1].percentage + chartData.healthStatusData[2].percentage) * 3.6}deg,
+                        ${chartData.healthStatusData[3].color} ${(chartData.healthStatusData[0].percentage + chartData.healthStatusData[1].percentage + chartData.healthStatusData[2].percentage) * 3.6}deg 360deg
+                      )`
+                    }}></div>
+                    <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-gray-800">15,420</div>
+                        <div className="text-sm text-gray-600">Total Workers</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-4">
+                  {chartData.healthStatusData.map((item, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div 
+                        className="w-3 h-3 rounded-full" 
+                        style={{ backgroundColor: item.color }}
+                      ></div>
+                      <div className="text-sm">
+                        <div className="font-medium">{item.status}</div>
+                        <div className="text-gray-600">{item.count.toLocaleString()} ({item.percentage}%)</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Kerala Health Map */}
+            {/* Line Chart for Health Compliance */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <h3 className="font-semibold text-lg mb-4">
-                🗺️ Kerala Health Map
+              <h3 className="font-semibold text-lg mb-4 flex items-center">
+                📈 Health Record Compliance Trend
+                <span className="ml-2 text-sm text-gray-500">(Monthly Average)</span>
               </h3>
-              <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <div className="text-4xl mb-2">🗺️</div>
-                  <div>Kerala Health Map</div>
-                  <div className="text-sm mt-2">
-                    Interactive map showing health zones and statistics
+              <div className="relative h-64 bg-gray-50 rounded-lg p-4">
+                <div className="absolute top-4 right-4 text-sm text-gray-600">
+                  Current: 95%
+                </div>
+                {/* Line Chart using CSS */}
+                <div className="relative h-full">
+                  <svg className="w-full h-full" viewBox="0 0 400 200">
+                    <defs>
+                      <linearGradient id="complianceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#22c55e" stopOpacity="0.3"/>
+                        <stop offset="100%" stopColor="#22c55e" stopOpacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    {/* Grid lines */}
+                    {[0, 25, 50, 75, 100].map((y, i) => (
+                      <line key={i} x1="40" y1={200 - (y * 1.6)} x2="380" y2={200 - (y * 1.6)} stroke="#e5e7eb" strokeWidth="1"/>
+                    ))}
+                    {/* Data line */}
+                    <polyline
+                      fill="none"
+                      stroke="#22c55e"
+                      strokeWidth="3"
+                      points={chartData.complianceData.map((value, index) => 
+                        `${40 + (index * 28)},${200 - (value * 1.6)}`
+                      ).join(' ')}
+                    />
+                    {/* Area under curve */}
+                    <polygon
+                      fill="url(#complianceGradient)"
+                      points={`40,200 ${chartData.complianceData.map((value, index) => 
+                        `${40 + (index * 28)},${200 - (value * 1.6)}`
+                      ).join(' ')} 380,200`}
+                    />
+                    {/* Data points */}
+                    {chartData.complianceData.map((value, index) => (
+                      <circle
+                        key={index}
+                        cx={40 + (index * 28)}
+                        cy={200 - (value * 1.6)}
+                        r="4"
+                        fill="#22c55e"
+                        className="hover:r-6 transition-all cursor-pointer"
+                      />
+                    ))}
+                  </svg>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 p-2">
+                  {chartData.monthlyLabels.map((label, index) => (
+                    <span key={index}>{label}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Kerala Health Map */}
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 className="font-semibold text-lg mb-4 flex items-center">
+                🗺️ Kerala Health Map - District-wise Analysis
+                <span className="ml-2 text-sm text-gray-500">(Click districts for details)</span>
+              </h3>
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 h-96 rounded-lg p-4 relative overflow-hidden">
+                {/* Simplified Kerala Map Layout */}
+                <div className="relative w-full h-full">
+                  {/* Map Grid */}
+                  <div className="grid grid-cols-4 gap-2 h-full">
+                    {chartData.districtData.slice(0, 12).map((district, index) => (
+                      <div
+                        key={district.name}
+                        className="relative group cursor-pointer"
+                        style={{
+                          backgroundColor: district.color + '20',
+                          border: `2px solid ${district.color}`,
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <div className="p-2 h-full flex flex-col justify-between">
+                          <div className="text-xs font-medium text-gray-800 truncate">
+                            {district.name}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            <div>{district.workers.toLocaleString()} workers</div>
+                            <div className="flex items-center justify-between">
+                              <span>Score: {district.healthScore}</span>
+                              {district.alerts > 0 && (
+                                <span className="bg-red-500 text-white px-1 rounded text-xs">
+                                  {district.alerts}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        {/* Hover tooltip */}
+                        <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-3 py-2 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap">
+                          <div className="font-medium">{district.name}</div>
+                          <div>Workers: {district.workers.toLocaleString()}</div>
+                          <div>Health Score: {district.healthScore}/100</div>
+                          <div>Alerts: {district.alerts}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Map Legend */}
+                  <div className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-sm">
+                    <div className="text-sm font-medium mb-2">Health Score Legend</div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-green-500 rounded"></div>
+                        <span>90-100 (Excellent)</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-yellow-500 rounded"></div>
+                        <span>80-89 (Good)</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-red-500 rounded"></div>
+                        <span>Below 80 (Needs Attention)</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -894,14 +1074,15 @@ const OfficialDashboard = () => {
             {/* Healthcare Provider Information */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-lg">
-                  🏥 Healthcare Provider Information
+                <h3 className="font-semibold text-lg flex items-center">
+                  🏥 Healthcare Provider Network
+                  <span className="ml-2 text-sm text-gray-500">({providers.length} providers)</span>
                 </h3>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Add Provider
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  + Add Provider
                 </button>
               </div>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {providers.map((provider) => (
                   <div
                     key={provider.id}
@@ -914,13 +1095,18 @@ const OfficialDashboard = () => {
                       <div className="text-sm text-gray-600">
                         {provider.field}
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-500 flex items-center">
                         📍 {provider.location}
                       </div>
                     </div>
-                    <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors">
-                      Contact
-                    </button>
+                    <div className="flex space-x-2">
+                      <button className="border border-blue-600 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors text-sm">
+                        Contact
+                      </button>
+                      <button className="border border-green-600 text-green-600 px-3 py-1 rounded-lg hover:bg-green-50 transition-colors text-sm">
+                        View
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

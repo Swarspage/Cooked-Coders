@@ -11,9 +11,9 @@ const Home = () => {
     <div className="bg-[url('./assets/background2.jpg')] bg-center bg-no-repeat bg-cover bg-clip-border min-h-screen font-[Quicksand]">
       <nav className="h-[15vh] m-0 px-20 bg-[#c4c4c456] flex justify-between items-center shadow-2xl">
         <img
-          className="h-10rem] w-[10rem] m-5 p-0"
-          src="./src/assets/logo 2.png"
-          alt="  "
+          className="h-[10rem] w-[10rem] m-5 p-0"
+          src="./assets/logo 2.png"
+          alt="Swaasthyam Logo"
         />
         <button 
           onClick={handleLoginRegisterClick}
