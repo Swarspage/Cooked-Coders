@@ -34,8 +34,7 @@ const Home = () => {
         </div>
         <div className="flex py-[2rem] items-start font-bold">
           <p>
-            The world's first AI-powered, multilingual, voice-enabled health
-            record <br />
+          The world's most efficient management tool - voice-enabled health database that streamlines worker monitoring, reporting, and emergency response across languages. <br />
             and database system built for migrant workers.
           </p>
         </div>
