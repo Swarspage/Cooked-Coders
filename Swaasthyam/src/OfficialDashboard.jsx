@@ -1,0 +1,1122 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import LoadingAnimation from "./LoadingAnimation";
+
+const OfficialDashboard = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedTab, setSelectedTab] = useState("dashboard");
+  const [selectedArea, setSelectedArea] = useState(null);
+  const [selectedOfficer, setSelectedOfficer] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Handle return from worker registration
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setSelectedTab(location.state.activeTab);
+      // Clear the state to avoid re-triggering
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate, location.pathname]);
+  
+  const handleLogout = () => {
+    setIsLoading(true);
+    // Simulate logout process
+    setTimeout(() => {
+      // Clear any authentication data here if needed
+      // localStorage.removeItem('authToken'); // example
+      navigate('/login');
+      setIsLoading(false);
+    }, 800);
+  };
+  
+  const handleRegisterNewWorker = () => {
+    setIsLoading(true);
+    // Simulate loading before navigation
+    setTimeout(() => {
+      navigate('/register-worker', { state: { returnTo: '/official-dashboard', tab: 'workers' } });
+      setIsLoading(false);
+    }, 500);
+  };
+
+  // Sample data based on your screenshots
+  const areas = [
+    {
+      id: "kochi",
+      name: "Kochi Metropolitan Area",
+      location: "Ernakulam, Kochi",
+      workers: 3420,
+      activeAlerts: 3,
+      officers: [
+        {
+          id: "1",
+          name: "Dr. Rajesh Kumar",
+          role: "Healthcare Officer",
+          specialization: "Occupational Health",
+          totalAssigned: 198,
+          activeAlerts: 3,
+          phone: "+91 98765 43213",
+          email: "rajesh.k@kerala.gov.in",
+        },
+        {
+          id: "2",
+          name: "Lakshmi Nair",
+          role: "Supervisor",
+          specialization: "Industrial Safety",
+          totalAssigned: 156,
+          activeAlerts: 1,
+          phone: "+91 98765 43214",
+          email: "lakshmi.n@kerala.gov.in",
+        },
+        {
+          id: "3",
+          name: "NGO Officer",
+          role: "NGO Officer",
+          specialization: "Community Health",
+          totalAssigned: 85,
+          activeAlerts: 0,
+        },
+      ],
+    },
+    {
+      id: "tvm",
+      name: "Thiruvananthapuram South",
+      location: "Thiruvananthapuram, Kollam",
+      workers: 2850,
+      activeAlerts: 4,
+      officers: [
+        {
+          id: "4",
+          name: "Dr. Rajesh Kumar",
+          role: "Healthcare Officer",
+          specialization: "Occupational Health",
+          totalAssigned: 198,
+          activeAlerts: 3,
+          phone: "+91 98765 43213",
+          email: "rajesh.k@kerala.gov.in",
+        },
+        {
+          id: "5",
+          name: "Lakshmi Nair",
+          role: "Supervisor",
+          specialization: "Industrial Safety",
+          totalAssigned: 156,
+          activeAlerts: 1,
+          phone: "+91 98765 43214",
+          email: "lakshmi.n@kerala.gov.in",
+        },
+      ],
+    },
+    {
+      id: "malabar",
+      name: "Malabar North Region",
+      location: "Kozhikode, Kannur, Kasaragod",
+      workers: 4180,
+      activeAlerts: 4,
+      officers: [
+        {
+          id: "6",
+          name: "Dr. Priya Nair",
+          role: "Healthcare Officer",
+          specialization: "General Medicine",
+          totalAssigned: 220,
+          activeAlerts: 2,
+          phone: "+91 98765 43215",
+          email: "priya.n@kerala.gov.in",
+        },
+      ],
+    },
+  ];
+
+  const workers = [
+    {
+      id: "w1",
+      name: "Rajesh Kumar",
+      status: "Fit",
+      alerts: 1,
+      qrId: "SW-2024-KL-001234",
+      phone: "+91 98765 43210",
+      workplace: "Metro Construction Site 1",
+      lastCheckup: "2024-09-10",
+      nextCheckup: "2024-09-25",
+      healthScore: 92,
+      documents: 3,
+      emergencyContact: "+91 98765 43211",
+    },
+    {
+      id: "w2",
+      name: "Anil Varma",
+      status: "Attention",
+      alerts: 2,
+      qrId: "SW-2024-KL-001235",
+      phone: "+91 98765 43220",
+      workplace: "Metro Construction Site 1",
+      lastCheckup: "2024-09-08",
+      nextCheckup: "2024-09-22",
+      healthScore: 78,
+      documents: 2,
+      emergencyContact: "+91 98765 43221",
+    },
+    {
+      id: "w3",
+      name: "Suresh Kumar",
+      status: "Fit",
+      alerts: 0,
+      qrId: "SW-2024-KL-001236",
+      phone: "+91 98765 43230",
+      workplace: "Construction Sites",
+      lastCheckup: "2024-09-12",
+      nextCheckup: "2024-09-28",
+      healthScore: 89,
+      documents: 3,
+      emergencyContact: "+91 98765 43231",
+    },
+  ];
+
+  const providers = [
+    {
+      id: 1,
+      name: "Dr. Priya Nair",
+      field: "General Medicine",
+      location: "Kochi",
+      phone: "+91 98765 43210",
+    },
+    {
+      id: 2,
+      name: "Dr. Rajesh Kumar",
+      field: "Occupational Health",
+      location: "Thiruvananthapuram",
+      phone: "+91 98765 43211",
+    },
+    {
+      id: 3,
+      name: "Dr. Maya Menon",
+      field: "Industrial Safety",
+      location: "Kozhikode",
+      phone: "+91 98765 43212",
+    },
+    {
+      id: 4,
+      name: "Dr. Arun Nair",
+      field: "Emergency Medicine",
+      location: "Kollam",
+      phone: "+91 98765 43213",
+    },
+  ];
+
+  const chartData = {
+    diseaseCategories: [
+      "Tuberculosis",
+      "Fever",
+      "Respiratory Issues",
+      "Diabetes",
+      "Skin Infections",
+      "Hypertension",
+    ],
+    diseaseValues: [45, 75, 35, 25, 55, 65],
+    complianceData: [95, 92, 88, 90, 94, 96, 93, 91, 89, 92, 94, 95],
+  };
+
+  if (isLoading) {
+    return <LoadingAnimation message="Processing..." />;
+  }
+
+  return (
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+      {/* Mobile Header */}
+      <div className="md:hidden bg-gradient-to-r from-blue-700 to-black text-white p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <img
+              src="./src/assets/logo 2.png"
+              alt="Swaasthyam Logo"
+              className="w-8 h-8 object-contain mr-3"
+            />
+            <div>
+              <h1 className="text-white text-lg font-semibold">Swaasthyam</h1>
+              <span className="text-blue-300 text-xs">Official</span>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="text-red-400 hover:text-red-300 font-medium p-2 rounded-lg hover:bg-red-600/20 transition-colors"
+          >
+            🚪 Logout
+          </button>
+        </div>
+        
+        {/* Mobile Navigation */}
+        <nav className="flex space-x-1 overflow-x-auto">
+          <button
+            className={`px-3 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap ${
+              selectedTab === "dashboard"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("dashboard");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            🏠 Dashboard
+          </button>
+          <button
+            className={`px-3 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap ${
+              selectedTab === "area"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("area");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            🗺️ Area
+          </button>
+          <button
+            className={`px-3 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap ${
+              selectedTab === "analytics"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("analytics");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            📊 Analytics
+          </button>
+          <button
+            className={`px-3 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap ${
+              selectedTab === "workers"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("workers");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            👥 Workers
+          </button>
+        </nav>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <aside
+        className="hidden md:flex w-64 p-4 flex-col"
+        style={{
+          background: "linear-gradient(to bottom, #1d4ed8, #000000)",
+        }}
+      >
+        <div className="flex items-center mb-8">
+          <img
+            src="./src/assets/logo 2.png"
+            alt="Swaasthyam Logo"
+            className="w-8 h-8 object-contain bg-white rounded p-1 mr-3"
+          />
+          <div>
+            <h1 className="text-white text-lg font-semibold">Swaasthyam</h1>
+            <span className="text-blue-300 text-xs">Official</span>
+          </div>
+        </div>
+
+        <nav className="space-y-2 flex-1">
+          <button
+            className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
+              selectedTab === "dashboard"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("dashboard");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            🏠 Dashboard
+          </button>
+          <button
+            className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
+              selectedTab === "area"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("area");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            🗺️ Area Management
+          </button>
+          <button
+            className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
+              selectedTab === "analytics"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("analytics");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            📊 Analytics
+          </button>
+          <button
+            className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-200 ${
+              selectedTab === "workers"
+                ? "bg-blue-900 text-white"
+                : "text-blue-200 hover:bg-blue-800"
+            }`}
+            onClick={() => {
+              setSelectedTab("workers");
+              setSelectedArea(null);
+              setSelectedOfficer(null);
+            }}
+          >
+            👥 Workers
+          </button>
+          <button className="w-full text-left px-3 py-2 rounded-md font-medium text-blue-200 hover:bg-blue-800 transition-colors duration-200">
+            ❓ Help
+          </button>
+        </nav>
+
+        <button onClick={handleLogout} className="mt-auto text-red-400 hover:text-red-300 font-medium">
+          🚪 Logout
+        </button>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        {/* Dashboard Tab */}
+        {selectedTab === "dashboard" && (
+          <div className="p-4 md:p-6">
+            <div className="bg-blue-600 text-white p-4 md:p-6 rounded-lg mb-6">
+              <h1 className="text-xl md:text-2xl font-bold mb-2">Officials Dashboard</h1>
+              <p className="text-blue-100 text-sm md:text-base">
+                Comprehensive health monitoring and management system
+              </p>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="text-3xl font-bold text-gray-800">15,420</div>
+                <div className="text-gray-600 mt-1">Total Workers</div>
+                <div className="text-blue-600 text-sm mt-1">👥</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="text-3xl font-bold text-green-600">14,850</div>
+                <div className="text-gray-600 mt-1">Registered</div>
+                <div className="text-green-600 text-sm mt-1">🛡️</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="text-3xl font-bold text-green-600">13,920</div>
+                <div className="text-gray-600 mt-1">Active</div>
+                <div className="text-green-600 text-sm mt-1">📈</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="text-3xl font-bold text-red-600">485</div>
+                <div className="text-gray-600 mt-1">Pending Reviews</div>
+                <div className="text-red-600 text-sm mt-1">⏰</div>
+              </div>
+            </div>
+
+            {/* Emergency Alerts */}
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-6">
+              <div className="flex items-center mb-4">
+                <div className="text-yellow-600 mr-2">⚠️</div>
+                <h3 className="font-semibold text-gray-800">
+                  Emergency Alert System
+                </h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-white rounded border-l-4 border-red-500">
+                  <div>
+                    <div className="flex items-center mb-1">
+                      <span className="bg-red-600 text-white text-xs px-2 py-1 rounded mr-2">
+                        Critical
+                      </span>
+                      <span className="text-sm text-gray-600">2024-09-13</span>
+                    </div>
+                    <div className="font-medium">
+                      TB outbreak detected in Ernakulam district
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      📍 Ernakulam • 12 workers affected
+                    </div>
+                  </div>
+                  <button className="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">
+                    Alert
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-white rounded border-l-4 border-orange-500">
+                  <div>
+                    <div className="flex items-center mb-1">
+                      <span className="bg-orange-600 text-white text-xs px-2 py-1 rounded mr-2">
+                        High
+                      </span>
+                      <span className="text-sm text-gray-600">2024-09-12</span>
+                    </div>
+                    <div className="font-medium">
+                      Fever spike in construction sites
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      📍 Kochi • 8 workers affected
+                    </div>
+                  </div>
+                  <button className="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">
+                    Alert
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-white rounded border-l-4 border-blue-500">
+                  <div>
+                    <div className="flex items-center mb-1">
+                      <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2">
+                        Medium
+                      </span>
+                      <span className="text-sm text-gray-600">2024-09-11</span>
+                    </div>
+                    <div className="font-medium">Routine screening overdue</div>
+                    <div className="text-sm text-gray-600">
+                      📍 Kollam • 25 workers affected
+                    </div>
+                  </div>
+                  <button className="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">
+                    Alert
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-3 gap-4">
+              <button className="bg-gradient-to-r from-purple-900 to-blue-800 text-white p-4 rounded-lg font-medium hover:shadow-lg transition-shadow">
+                📊 Generate Report
+              </button>
+              <button className="border-2 border-red-500 text-red-500 p-4 rounded-lg font-medium hover:bg-red-50 transition-colors">
+                🚨 Alert Health Dept
+              </button>
+              <button className="border-2 border-blue-500 text-blue-500 p-4 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                🏥 Resource Allocation
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Area Management Tab */}
+        {selectedTab === "area" && (
+          <div className="p-4 md:p-6">
+            {!selectedArea && !selectedOfficer && (
+              <div>
+                <div className="bg-blue-600 text-white p-6 rounded-lg mb-6">
+                  <h1 className="text-2xl font-bold mb-2">Area Management</h1>
+                  <p className="text-blue-100">
+                    Manage officers and workers across assigned geographic areas
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {areas.map((area) => (
+                    <div
+                      key={area.id}
+                      className="bg-white rounded-lg shadow-sm p-6"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                            📍 {area.name}
+                          </h3>
+                          <p className="text-gray-600">{area.location}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-green-600 font-semibold text-lg">
+                            {area.workers.toLocaleString()} Workers
+                          </div>
+                          <div className="text-right">
+                            <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm mr-2">
+                              {area.officers.length} Officers
+                            </span>
+                            <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm">
+                              {area.activeAlerts} Active Alerts
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex space-x-2">
+                          {area.officers.some(
+                            (o) => o.role === "Healthcare Officer"
+                          ) && (
+                            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                              Healthcare Officer
+                            </span>
+                          )}
+                          {area.officers.some(
+                            (o) => o.role === "Supervisor"
+                          ) && (
+                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                              Supervisor
+                            </span>
+                          )}
+                          {area.officers.some(
+                            (o) => o.role === "NGO Officer"
+                          ) && (
+                            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+                              NGO Officer
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                          onClick={() => setSelectedArea(area)}
+                        >
+                          👥 Officers in Area
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedArea && !selectedOfficer && (
+              <div>
+                <button
+                  className="mb-4 flex items-center text-blue-600 hover:text-blue-800"
+                  onClick={() => setSelectedArea(null)}
+                >
+                  ← Back to Areas
+                </button>
+
+                <div className="bg-blue-600 text-white p-6 rounded-lg mb-6">
+                  <h1 className="text-2xl font-bold mb-2">
+                    {selectedArea.name} - Officers in Area
+                  </h1>
+                  <p className="text-blue-100">
+                    {selectedArea.officers.length} officers managing{" "}
+                    {selectedArea.workers.toLocaleString()} workers
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {selectedArea.officers.map((officer) => (
+                    <div
+                      key={officer.id}
+                      className="bg-white rounded-lg shadow-sm p-6"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-800">
+                            {officer.name}
+                          </h3>
+                          <p className="text-gray-600">
+                            {officer.specialization}
+                          </p>
+                        </div>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm text-white ${
+                            officer.role === "Healthcare Officer"
+                              ? "bg-green-600"
+                              : officer.role === "Supervisor"
+                              ? "bg-blue-600"
+                              : "bg-purple-600"
+                          }`}
+                        >
+                          {officer.role}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <div className="text-2xl font-bold text-blue-600">
+                            {officer.totalAssigned}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Assigned Workers
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-orange-600">
+                            {officer.activeAlerts}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            Active Alerts
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mb-4 space-y-1 text-sm text-gray-600">
+                        {officer.phone && <div>📞 {officer.phone}</div>}
+                        {officer.email && <div>📧 {officer.email}</div>}
+                      </div>
+
+                      <div className="flex space-x-3">
+                        <button
+                          className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                          onClick={() => setSelectedOfficer(officer)}
+                        >
+                          View Officer
+                        </button>
+                        <button className="flex-1 border border-blue-600 text-blue-600 py-2 rounded-lg hover:bg-blue-50 transition-colors">
+                          Contact Officer
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedOfficer && (
+              <div>
+                <button
+                  className="mb-4 flex items-center text-blue-600 hover:text-blue-800"
+                  onClick={() => setSelectedOfficer(null)}
+                >
+                  ← Back to Officers
+                </button>
+
+                <div className="bg-blue-600 text-white p-6 rounded-lg mb-6">
+                  <h1 className="text-2xl font-bold mb-2">
+                    {selectedOfficer.name} - Officer Details
+                  </h1>
+                  <p className="text-blue-100">
+                    Supervisor • {selectedOfficer.specialization}
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <div className="mb-6">
+                    <h3 className="font-semibold text-lg mb-3">
+                      Officer Information
+                    </h3>
+                    <div className="space-y-2">
+                      <div>
+                        <strong>Contact Information</strong>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>📞</span>
+                        <a
+                          href={`tel:${selectedOfficer.phone}`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {selectedOfficer.phone}
+                        </a>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>📧</span>
+                        <a
+                          href={`mailto:${selectedOfficer.email}`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {selectedOfficer.email}
+                        </a>
+                      </div>
+                      <div>
+                        <strong>Specialization</strong>
+                      </div>
+                      <div>{selectedOfficer.specialization}</div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg mb-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600">
+                        {selectedOfficer.totalAssigned}
+                      </div>
+                      <div className="text-gray-600">Assigned Workers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-red-600">
+                        {selectedOfficer.activeAlerts}
+                      </div>
+                      <div className="text-gray-600">Active Alerts</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-lg mb-4">
+                      👥 Assigned Workers
+                    </h4>
+                    <div className="space-y-4">
+                      {workers.slice(0, 2).map((worker) => (
+                        <div
+                          key={worker.id}
+                          className="border border-gray-200 rounded-lg p-4"
+                        >
+                          <div className="flex justify-between items-center mb-2">
+                            <div className="font-semibold">{worker.name}</div>
+                            <div className="flex space-x-2">
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs text-white ${
+                                  worker.status === "Fit"
+                                    ? "bg-green-600"
+                                    : "bg-red-600"
+                                }`}
+                              >
+                                {worker.status}
+                              </span>
+                              {worker.alerts > 0 && (
+                                <span className="bg-red-600 text-white px-2 py-1 rounded-full text-xs">
+                                  {worker.alerts} Alerts
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                            <div>
+                              <div>QR ID: {worker.qrId}</div>
+                              <div>Phone: {worker.phone}</div>
+                              <div>Workplace: {worker.workplace}</div>
+                            </div>
+                            <div>
+                              <div>Last Checkup: {worker.lastCheckup}</div>
+                              <div>Next Checkup: {worker.nextCheckup}</div>
+                              <div>Health Score: {worker.healthScore}/100</div>
+                            </div>
+                          </div>
+
+                          <div className="mt-3 text-sm text-gray-600">
+                            <div>
+                              Documents: {worker.documents} • Emergency:{" "}
+                              {worker.emergencyContact}
+                            </div>
+                          </div>
+
+                          <button className="mt-3 border border-gray-300 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                            View Details
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Analytics Tab */}
+        {selectedTab === "analytics" && (
+          <div className="p-4 md:p-6">
+            <div className="bg-blue-600 text-white p-4 md:p-6 rounded-lg mb-6">
+              <h1 className="text-xl md:text-2xl font-bold mb-2">Health Analytics</h1>
+              <p className="text-blue-100 text-sm md:text-base">Disease Trend Analysis</p>
+            </div>
+
+            {/* Disease Trend Analysis - Bar Chart */}
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 className="font-semibold text-lg mb-4">
+                Disease Trend Analysis
+              </h3>
+              <div className="flex items-end space-x-2 h-64">
+                {chartData.diseaseCategories.map((category, index) => (
+                  <div
+                    key={category}
+                    className="flex-1 flex flex-col items-center"
+                  >
+                    <div
+                      className="bg-blue-600 w-full rounded-t-lg transition-all hover:bg-blue-700"
+                      style={{
+                        height: `${
+                          (chartData.diseaseValues[index] / 80) * 100
+                        }%`,
+                      }}
+                    ></div>
+                    <div className="text-xs text-gray-600 mt-2 text-center transform -rotate-45 origin-center">
+                      {category}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Health Record Compliance - Line Chart */}
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 className="font-semibold text-lg mb-4">
+                🏥 Health Record Compliance
+              </h3>
+              <div className="text-sm text-gray-600 mb-2">
+                Compliance Rate: 95%
+              </div>
+              <div className="relative h-32 bg-gray-50 rounded-lg p-4">
+                <div className="flex items-end space-x-1 h-full">
+                  {chartData.complianceData.map((value, index) => (
+                    <div key={index} className="flex-1 relative">
+                      <div
+                        className="bg-green-500 w-full rounded-t-sm"
+                        style={{ height: `${value}%` }}
+                      ></div>
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 p-2">
+                  <span>Jan</span>
+                  <span>Feb</span>
+                  <span>Mar</span>
+                  <span>Apr</span>
+                  <span>May</span>
+                  <span>Jun</span>
+                  <span>Jul</span>
+                  <span>Aug</span>
+                  <span>Sep</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Kerala Health Map */}
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 className="font-semibold text-lg mb-4">
+                🗺️ Kerala Health Map
+              </h3>
+              <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+                <div className="text-center text-gray-600">
+                  <div className="text-4xl mb-2">🗺️</div>
+                  <div>Kerala Health Map</div>
+                  <div className="text-sm mt-2">
+                    Interactive map showing health zones and statistics
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Healthcare Provider Information */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-lg">
+                  🏥 Healthcare Provider Information
+                </h3>
+                <button className="text-blue-600 hover:text-blue-800 font-medium">
+                  Add Provider
+                </button>
+              </div>
+              <div className="space-y-4">
+                {providers.map((provider) => (
+                  <div
+                    key={provider.id}
+                    className="flex justify-between items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <div>
+                      <div className="font-semibold text-gray-800">
+                        {provider.name}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {provider.field}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        📍 {provider.location}
+                      </div>
+                    </div>
+                    <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors">
+                      Contact
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Workers Tab */}
+        {selectedTab === "workers" && (
+          <div className="p-4 md:p-6">
+            <div className="bg-blue-600 text-white p-4 md:p-6 rounded-lg mb-6">
+              <h1 className="text-xl md:text-2xl font-bold mb-2">Workers Management</h1>
+              <p className="text-blue-100 text-sm md:text-base">
+                Manage and monitor all registered workers
+              </p>
+            </div>
+
+            {/* Worker Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="text-2xl font-bold text-blue-600">
+                  {workers.length}
+                </div>
+                <div className="text-gray-600 text-sm">Total Workers</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="text-2xl font-bold text-green-600">
+                  {workers.filter(w => w.status === "Fit").length}
+                </div>
+                <div className="text-gray-600 text-sm">Fit Workers</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="text-2xl font-bold text-orange-600">
+                  {workers.filter(w => w.status === "Attention").length}
+                </div>
+                <div className="text-gray-600 text-sm">Need Attention</div>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="text-2xl font-bold text-red-600">
+                  {workers.filter(w => w.alerts > 0).length}
+                </div>
+                <div className="text-gray-600 text-sm">Active Alerts</div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <button 
+                onClick={handleRegisterNewWorker}
+                className="bg-green-600 text-white p-4 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>➕</span>
+                <span>Register New Worker</span>
+              </button>
+              <button className="border-2 border-blue-500 text-blue-500 p-4 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center justify-center space-x-2">
+                <span>📊</span>
+                <span>Export Worker Data</span>
+              </button>
+              <button className="border-2 border-purple-500 text-purple-500 p-4 rounded-lg font-medium hover:bg-purple-50 transition-colors flex items-center justify-center space-x-2">
+                <span>🔍</span>
+                <span>Bulk Health Check</span>
+              </button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-semibold text-lg">All Workers</h3>
+                <div className="flex space-x-3">
+                  <select className="border border-gray-300 rounded-lg px-4 py-2">
+                    <option>All Status</option>
+                    <option>Fit</option>
+                    <option>Needs Attention</option>
+                    <option>Pending Review</option>
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="Search workers..."
+                    className="border border-gray-300 rounded-lg px-4 py-2"
+                  />
+                  <button 
+                    onClick={handleRegisterNewWorker}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                  >
+                    <span>➕</span>
+                    <span>Add Worker</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Enhanced Worker List */}
+              <div className="space-y-4">
+                {workers.map((worker) => (
+                  <div
+                    key={worker.id}
+                    className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <div className="font-semibold text-gray-800">
+                            {worker.name}
+                          </div>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs text-white ${
+                              worker.status === "Fit"
+                                ? "bg-green-600"
+                                : "bg-red-600"
+                            }`}
+                          >
+                            {worker.status}
+                          </span>
+                          {worker.alerts > 0 && (
+                            <span className="bg-red-600 text-white px-2 py-1 rounded-full text-xs">
+                              {worker.alerts} Alerts
+                            </span>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                          <div>
+                            <div><strong>QR ID:</strong> {worker.qrId}</div>
+                            <div><strong>Phone:</strong> {worker.phone}</div>
+                          </div>
+                          <div>
+                            <div><strong>Workplace:</strong> {worker.workplace}</div>
+                            <div><strong>Last Checkup:</strong> {worker.lastCheckup}</div>
+                          </div>
+                          <div>
+                            <div><strong>Health Score:</strong> {worker.healthScore}/100</div>
+                            <div><strong>Next Checkup:</strong> {worker.nextCheckup}</div>
+                          </div>
+                        </div>
+                        <div className="mt-2 text-sm text-gray-500">
+                          <strong>Documents:</strong> {worker.documents} • 
+                          <strong> Emergency:</strong> {worker.emergencyContact}
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-2 ml-4">
+                        <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors text-sm">
+                          View Details
+                        </button>
+                        <button className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors text-sm">
+                          Add Health Log
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Additional Management Tools */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h4 className="font-semibold text-lg mb-4 text-gray-800">
+                  🏥 Health Management Tools
+                </h4>
+                <div className="space-y-3">
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">Schedule Mass Health Screening</div>
+                    <div className="text-sm text-gray-600">Organize health checkups for multiple workers</div>
+                  </button>
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">Generate Health Reports</div>
+                    <div className="text-sm text-gray-600">Create comprehensive health analytics</div>
+                  </button>
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">Vaccination Tracking</div>
+                    <div className="text-sm text-gray-600">Monitor vaccination status and schedules</div>
+                  </button>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h4 className="font-semibold text-lg mb-4 text-gray-800">
+                  📋 Administrative Tools
+                </h4>
+                <div className="space-y-3">
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">Bulk Worker Import</div>
+                    <div className="text-sm text-gray-600">Import multiple worker records from CSV</div>
+                  </button>
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">QR Code Generator</div>
+                    <div className="text-sm text-gray-600">Generate QR codes for worker identification</div>
+                  </button>
+                  <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="font-medium">Compliance Reports</div>
+                    <div className="text-sm text-gray-600">Generate regulatory compliance reports</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default OfficialDashboard;

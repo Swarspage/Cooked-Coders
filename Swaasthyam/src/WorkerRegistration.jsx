@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import LoadingAnimation from "./LoadingAnimation";
 
 const WorkerRegistration = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Stepper and voice states
   const [currentStep, setCurrentStep] = useState(1);
@@ -11,6 +13,7 @@ const WorkerRegistration = () => {
   const [activeField, setActiveField] = useState(null);
   const [extractedKeywords, setExtractedKeywords] = useState([]);
   const [showKeywordAnalysis, setShowKeywordAnalysis] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const recognitionRef = useRef(null);
 
   // Form data state
@@ -1313,25 +1316,48 @@ const WorkerRegistration = () => {
   };
 
   const handleSubmitRegistration = () => {
-    // Final submission hook — integrate API here
-    console.log("Submitting registration:", formData);
-    alert(
-      "Registration submitted successfully! You will receive your QR ID shortly."
-    );
-    // Navigate back to Officer Dashboard as requested
-    navigate("/officer");
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      // Final submission hook — integrate API here
+      console.log("Submitting registration:", formData);
+      alert(
+        "Registration submitted successfully! You will receive your QR ID shortly."
+      );
+      
+      // Navigate back to the previous location or default location based on state
+      const returnTo = location.state?.returnTo;
+      const tab = location.state?.tab;
+      
+      if (returnTo === '/official-dashboard' && tab === 'workers') {
+        // Return to official dashboard workers tab
+        navigate('/official-dashboard', { state: { activeTab: 'workers' } });
+      } else if (returnTo) {
+        // Return to specified location
+        navigate(returnTo);
+      } else {
+        // Default fallback - navigate to officer dashboard
+        navigate("/officer");
+      }
+      setIsLoading(false);
+    }, 2000);
   };
+
+  if (isLoading) {
+    return <LoadingAnimation message="Submitting registration..." />;
+  }
 
   return (
     <div className="flex font-[Quicksand] justify-center min-w-[50px] min-h-screen bg-gray-100">
-      <div className="m-0 p-[1rem] w-[90%] max-w-4xl flex items-center flex-col">
-        <p className="text-4xl font-extrabold text-blue-600 mb-8">
+      <div className="m-0 p-4 md:p-8 w-full max-w-4xl flex items-center flex-col">
+        <h1 className="text-2xl md:text-4xl font-extrabold text-blue-600 mb-6 md:mb-8 text-center">
           Worker Registration
-        </p>
+        </h1>
 
         {/* Stepper */}
-        <div className="w-full max-w-2xl mx-auto mb-8">
-          <div className="flex items-center justify-between mb-8">
+        <div className="w-full max-w-2xl mx-auto mb-6 md:mb-8">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
             {steps.map((step, index) => {
               const isCompleted = step.number < currentStep;
               const isCurrent = step.number === currentStep;
@@ -1342,7 +1368,7 @@ const WorkerRegistration = () => {
                   <div className="flex flex-col items-center">
                     <div
                       className={`
-                        w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold border-2 transition-all duration-200
+                        w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-semibold border-2 transition-all duration-200
                         ${
                           isCompleted || isCurrent
                             ? "bg-blue-600 text-white border-blue-600"
@@ -1353,7 +1379,7 @@ const WorkerRegistration = () => {
                       {step.number}
                     </div>
                     <span
-                      className={`text-sm mt-2 font-medium ${
+                      className={`text-xs md:text-sm mt-1 md:mt-2 font-medium text-center ${
                         isCurrent ? "text-blue-600" : "text-gray-500"
                       }`}
                     >
@@ -1364,7 +1390,7 @@ const WorkerRegistration = () => {
                   {/* Connector */}
                   {index < steps.length - 1 && (
                     <div
-                      className={`w-24 h-1 mx-4 rounded transition-all duration-200 ${
+                      className={`w-12 md:w-24 h-1 mx-2 md:mx-4 rounded transition-all duration-200 ${
                         isCompleted ? "bg-blue-600" : "bg-gray-300"
                       }`}
                     />
@@ -1376,17 +1402,17 @@ const WorkerRegistration = () => {
         </div>
 
         {/* Content */}
-        <div className="w-full max-w-4xl mx-auto mb-8">
-          <div className="border-[1px] border-blue-100 border-solid shadow-2xl rounded-lg p-6 min-h-[400px] bg-white">
+        <div className="w-full max-w-4xl mx-auto mb-6 md:mb-8">
+          <div className="border border-blue-100 border-solid shadow-xl md:shadow-2xl rounded-lg p-4 md:p-6 min-h-[300px] md:min-h-[400px] bg-white">
             {renderStepContent()}
           </div>
         </div>
 
         {/* Footer controls */}
-        <div className="flex justify-center gap-4 w-full max-w-2xl">
+        <div className="flex flex-col md:flex-row justify-center gap-3 md:gap-4 w-full max-w-md md:max-w-2xl">
           <button
             onClick={currentStep === 1 ? handleBackToLogin : handlePrevious}
-            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-400 transition-all"
+            className="w-full md:w-auto px-6 py-3 md:py-2 bg-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-400 transition-all"
           >
             {currentStep === 1 ? "Back to Login" : "Previous"}
           </button>
@@ -1394,14 +1420,14 @@ const WorkerRegistration = () => {
           {currentStep < 3 ? (
             <button
               onClick={handleNext}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
+              className="w-full md:w-auto px-6 py-3 md:py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
             >
               Next
             </button>
           ) : (
             <button
               onClick={handleSubmitRegistration}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all"
+              className="w-full md:w-auto px-6 py-3 md:py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all"
             >
               Submit Registration
             </button>

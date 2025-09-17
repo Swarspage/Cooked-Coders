@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingAnimation from "./LoadingAnimation";
 
 /*
   OfficerDashboard.jsx
@@ -24,6 +25,7 @@ export default function OfficerDashboard() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [viewing, setViewing] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Sample data mirrored from the mockups
   const workers = useMemo(
@@ -154,27 +156,93 @@ export default function OfficerDashboard() {
   const highRisk = workers.filter((w) => w.status === "Needs Attention").length;
 
   const handleRegisterWorker = () => {
-    // Adjust route if different in the app router
-    navigate("/register-worker");
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate("/register-worker");
+      setIsLoading(false);
+    }, 500);
   };
 
   const handleAddHealthLog = () => {
     alert("Add Health Log: coming soon.");
   };
+  
   const handleVoiceLog = () => {
     alert("Voice Log: coming soon.");
   };
+  
+  const handleLogout = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      // Clear any authentication data here if needed
+      // localStorage.removeItem('authToken'); // example
+      navigate('/login');
+      setIsLoading(false);
+    }, 800);
+  };
+
+  if (isLoading) {
+    return <LoadingAnimation message="Processing..." />;
+  }
 
   return (
-    <div className="min-h-screen flex font-[Quicksand] text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-60 shrink-0 text-white bg-gradient-to-b from-blue-700 to-black">
-        <div className="px-4 py-5 flex items-center gap-3">
-          <div className="h-9 w-9 rounded-md bg-white/20 grid place-items-center">
-            <HeartMini />
+    <div className="min-h-screen flex flex-col md:flex-row font-[Quicksand] text-gray-900">
+      {/* Mobile Header */}
+      <div className="md:hidden bg-gradient-to-r from-blue-700 to-black text-white p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <img
+              src="./src/assets/logo 2.png"
+              alt="Swaasthyam Logo"
+              className="h-9 w-9 object-contain"
+            />
+            <div>
+              <p className="text-sm leading-tight font-semibold">Swaasthyam</p>
+              <p className="text-[11px] opacity-80">Officer</p>
+            </div>
           </div>
+          <button
+            onClick={handleLogout}
+            className="text-xs px-3 py-2 rounded-md bg-red-600/90 hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        </div>
+        
+        {/* Mobile Navigation */}
+        <nav className="flex space-x-1 overflow-x-auto">
+          {navItems.map(({ key, label, icon: Icon }) => {
+            const isActive = active === key;
+            return (
+              <button
+                key={key}
+                onClick={() => setActive(key)}
+                className={[
+                  "flex items-center gap-2 px-3 py-2 rounded-md transition whitespace-nowrap text-sm",
+                  isActive
+                    ? "bg-white/20 text-white"
+                    : "text-white/90 hover:bg-white/10",
+                ].join(" ")}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <Icon className="h-4 w-4 opacity-90" />
+                <span>{label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex w-60 shrink-0 text-white bg-gradient-to-b from-blue-700 to-black flex-col">
+        <div className="px-4 py-5 flex items-center gap-3">
+          <img
+            src="./src/assets/logo 2.png"
+            alt="Swaasthyam Logo"
+            className="h-9 w-9 object-contain rounded-md bg-white/20 p-1"
+          />
           <div>
-            <p className="text-sm leading-tight">swaasthyam</p>
+            <p className="text-sm leading-tight font-semibold">Swaasthyam</p>
             <p className="text-[11px] opacity-80">Officer</p>
           </div>
         </div>
@@ -203,7 +271,7 @@ export default function OfficerDashboard() {
 
         <div className="mt-auto px-4 py-4">
           <button
-            onClick={() => alert("Logging out...")}
+            onClick={handleLogout}
             className="w-full text-left text-xs px-3 py-2 rounded-md bg-red-600/90 hover:bg-red-600 transition"
           >
             Logout
@@ -214,7 +282,7 @@ export default function OfficerDashboard() {
       {/* Main area */}
       <main className="flex-1 bg-gray-50">
         {/* Top bar actions only on Workers page */}
-        <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
+        <div className="flex flex-col md:flex-row md:items-center justify-between px-4 md:px-6 py-4 border-b bg-white gap-4">
           <h1 className="text-xl font-semibold">
             {active === "home" && "Supervisor Dashboard"}
             {active === "workers" && "My Workers"}
@@ -223,24 +291,30 @@ export default function OfficerDashboard() {
           </h1>
 
           {active === "workers" && (
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-3">
               <button
                 onClick={handleAddHealthLog}
-                className="inline-flex items-center gap-2 px-3 h-9 rounded-md bg-indigo-700 text-white hover:bg-indigo-800 transition"
+                className="inline-flex items-center justify-center gap-2 px-3 h-9 rounded-md bg-indigo-700 text-white hover:bg-indigo-800 transition text-sm"
               >
-                <PlusIcon className="h-4 w-4" /> Add Health Log
+                <PlusIcon className="h-4 w-4" /> 
+                <span className="hidden md:inline">Add Health Log</span>
+                <span className="md:hidden">Add Log</span>
               </button>
               <button
                 onClick={handleVoiceLog}
-                className="inline-flex items-center gap-2 px-3 h-9 rounded-md border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 transition"
+                className="inline-flex items-center justify-center gap-2 px-3 h-9 rounded-md border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 transition text-sm"
               >
-                <MicIcon className="h-4 w-4" /> Voice Log
+                <MicIcon className="h-4 w-4" /> 
+                <span className="hidden md:inline">Voice Log</span>
+                <span className="md:hidden">Voice</span>
               </button>
               <button
                 onClick={handleRegisterWorker}
-                className="inline-flex items-center gap-2 px-3 h-9 rounded-md bg-indigo-700 text-white hover:bg-indigo-800 transition"
+                className="inline-flex items-center justify-center gap-2 px-3 h-9 rounded-md bg-indigo-700 text-white hover:bg-indigo-800 transition text-sm"
               >
-                <PlusIcon className="h-4 w-4" /> Register new worker
+                <PlusIcon className="h-4 w-4" /> 
+                <span className="hidden md:inline">Register new worker</span>
+                <span className="md:hidden">Register</span>
               </button>
             </div>
           )}
@@ -248,7 +322,7 @@ export default function OfficerDashboard() {
 
         {/* Content */}
         {active === "home" && (
-          <div className="p-6 space-y-6">
+          <div className="p-4 md:p-6 space-y-6">
             {/* Metric cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard
@@ -303,7 +377,7 @@ export default function OfficerDashboard() {
         )}
 
         {active === "workers" && (
-          <div className="p-6 space-y-6">
+          <div className="p-4 md:p-6 space-y-6">
             {/* Search + Filter */}
             <div className="flex flex-col md:flex-row gap-3 md:items-center">
               <div className="relative flex-1">
