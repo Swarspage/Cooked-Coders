@@ -1,5 +1,12 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleLoginRegisterClick = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="bg-[url('./assets/background2.jpg')] bg-center bg-no-repeat bg-cover bg-clip-border min-h-screen font-[Quicksand]">
       <nav className="h-[15vh] m-0 px-20 bg-[#c4c4c456] flex justify-between items-center shadow-2xl">
@@ -8,7 +15,10 @@ const Home = () => {
           src="./src/assets/logo 2.png"
           alt="  "
         />
-        <button className="h-[3rem] w-[15rem] px-2 text-[.8rem] bg-gradient-to-r from-blue-700 to-blue-900 text-white rounded-4xl font-semibold hover:from-blue-500 hover:to-blue-700 hover:cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+        <button 
+          onClick={handleLoginRegisterClick}
+          className="h-[3rem] w-[15rem] px-2 text-[.8rem] bg-gradient-to-r from-blue-700 to-blue-900 text-white rounded-4xl font-semibold hover:from-blue-500 hover:to-blue-700 hover:cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+        >
           Login / Register new migrant
         </button>
       </nav>

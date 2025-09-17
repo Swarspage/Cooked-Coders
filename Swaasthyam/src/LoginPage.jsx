@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtp, setShowOtp] = useState(false);
@@ -43,6 +45,10 @@ const LoginPage = () => {
     }
     // verify OTP (call your API here)
     console.log("verify", { phone, otp });
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
   };
 
   return (
@@ -221,6 +227,7 @@ const LoginPage = () => {
 
               <button
                 type="button"
+                onClick={handleRegisterClick}
                 className="w-full max-w-3xl mt-[.5rem] mx-auto h-10 flex items-center justify-center rounded-sm border-green-700 border-solid border-[1px] text-green-600 shadow-lg transition-transform duration-150 active:scale-95 focus:outline-none disabled:opacity-60"
               >
                 Register new worker
