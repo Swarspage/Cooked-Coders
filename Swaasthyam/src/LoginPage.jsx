@@ -99,6 +99,13 @@ const LoginPage = () => {
         <article className="font-[Quicksand] w-full max-w-md">
           <div className="bg-white p-6 md:p-8 border-blue-200 border border-solid rounded-2xl shadow-xl">
             <div className="mb-6">
+            <h2 className="text-blue-600 text-center font-bold text-lg md:text-xl mb-2">
+              Welcome to Swaasthyam
+            </h2>
+            <p className="text-center text-gray-600 text-sm mb-6">
+              Secure and comprehensive health record management for migrant
+              workers
+            </p>
               <p className="font-semibold text-blue-600 mb-4">Select user type</p>
               
               <div className="space-y-3">
