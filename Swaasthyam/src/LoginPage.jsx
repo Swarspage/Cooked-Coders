@@ -98,15 +98,6 @@ const LoginPage = () => {
       <main className="flex justify-center px-4 pb-8">
         <article className="font-[Quicksand] w-full max-w-md">
           <div className="bg-white p-6 md:p-8 border-blue-200 border border-solid rounded-2xl shadow-xl">
-            
-            <p className="text-blue-600 text-center font-bold text-[1rem]">
-              Welcome to Swaasthyam
-            </p>
-            <p className="text-center text-black">
-              Secure and comprehensive health record management for migrant
-              workers
-            </p>
-
             <div className="mb-6">
               <p className="font-semibold text-blue-600 mb-4">Select user type</p>
               
